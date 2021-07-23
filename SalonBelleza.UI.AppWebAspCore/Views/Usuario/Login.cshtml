@@ -1,0 +1,37 @@
+﻿@model SalonBelleza.EntidadesDeNegocio.Usuario
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h3>Iniciar Sesion</h3>
+
+<img src="~/imagenes/17503049231586786427-512.png" class="rounded mx-auto d-block" alt="..." width="150" height="150">
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Login">
+            <input type="hidden" name="pReturnUrl" value="@ViewBag.Url" />
+            <div class="col-md-4">
+                <label asp-for="Login" class="control-label"></label>
+                <input asp-for="Login" class="form-control" />
+                <span asp-validation-for="Login" class="text-danger"></span>
+            </div>
+            <div class="col-md-4">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+ 
+            </br>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-primary" />
+            </div>
+            <span class="text-danger">@ViewBag.Error</span>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
