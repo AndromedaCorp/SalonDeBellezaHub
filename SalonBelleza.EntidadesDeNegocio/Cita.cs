@@ -12,7 +12,7 @@ namespace SalonBelleza.EntidadesDeNegocio
     {
         [Key]
         public int Id { get; set; }
-
+        //llave primaria*************
         [ForeignKey("Usuario")]
         [Required(ErrorMessage ="Usuario es obligatorio")]
         [Display(Name ="Empleado")]
