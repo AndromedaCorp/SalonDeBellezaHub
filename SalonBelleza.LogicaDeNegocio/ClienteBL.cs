@@ -9,6 +9,7 @@ using SalonBelleza.AccesoADatos;
 namespace SalonBelleza.LogicaDeNegocio
 {
     //Soy un cliente.
+    //Soy el segundo cliente
     public class ClienteBL
     {
         public async Task<int> CrearAsync(Cliente pCliente) 
