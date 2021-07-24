@@ -90,39 +90,46 @@
                     <div class="accordion-body">
 
                         @*aqui comienza el codigo html de manejar*@
-                        <div class="form-group">
-                            <label>Servicios</label>
-                            <select>
-                                <option selected value="">SELECCIONAR</option>
-                                @foreach (var item in servicios)
-                                {
-                                    <option value="@item.Id">@item.Nombre</option>
-                                }
-                            </select>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Servicios</label>
+                                    <select class="form-control" id="exampleFormControlSelect1">
+                                        <option selected value="">SELECCIONAR</option>
+                                        @foreach (var item in servicios)
+                                        {
+                                            <option value="@item.Id">@item.Nombre</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Presiona para agregar</label><br />
+                                    <button onclick="add();" type="button" class="btn btn-primary">
+                                        Agregar
+                                    </button>
+                                </div>
+                            </div>
                         </div>
 
-                        <button onclick="add();" type="button">
-                            Agregar
-                        </button>
+                            <table class="table table-sm" id="table">
+                                <thead>
+                                    <tr>
+                                        <td>Servicio</td>
+                                        <td>Precio</td>
+                                        <td>Duracion</td>
 
-                        <table  id="table">
-                            <thead>
-                                <tr>
-                                    <td>Servicio</td>
-                                    <td>Precio</td>
-                                    <td>Duracion</td>
-                                    
-                                    <td>Eliminar</td>
-                                </tr>
-                            </thead>
-                            <tbody id="tbd">
+                                        <td>Eliminar</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbd">
+                                </tbody>
+                            </table>
+                            @*aqui termina*@
 
-                            </tbody>
-                        </table>
-                        @*aqui termina*@
-
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
 
