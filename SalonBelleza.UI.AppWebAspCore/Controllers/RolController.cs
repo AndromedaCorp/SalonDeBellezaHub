@@ -17,7 +17,6 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
     {
         RolBL rolBL = new RolBL();
         // GET: RolController
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Index(Rol pRol = null) 
         {
             if (pRol == null)
@@ -32,7 +31,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Details/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Details(int id) 
         {
             var rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = id });
@@ -119,11 +118,5 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(pRol);
             }
         }
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
-
     }
 }
