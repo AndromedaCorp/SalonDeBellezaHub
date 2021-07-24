@@ -13,6 +13,7 @@ namespace SalonBelleza.AccesoADatos
     public class DetalleCitaDAL
     {
         //Uy
+        //comentario
              #region CRUD
             //metodo de creacion
             public static async Task<int> CrearAsync(DetalleCita pDetalleCita)
