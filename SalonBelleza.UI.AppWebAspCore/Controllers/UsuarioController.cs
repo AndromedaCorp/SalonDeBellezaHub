@@ -16,13 +16,15 @@ using System.Security.Claims;
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+   
 
     public class UsuarioController : Controller
     {
         UsuarioBL usuarioBL = new UsuarioBL();
         RolBL rolBL = new RolBL();
         // GET: UsuarioController
-       public async Task<IActionResult> Index(Usuario pUsuario = null)
+         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
+        public async Task<IActionResult> Index(Usuario pUsuario = null)
         {
             if (pUsuario == null)
                 pUsuario = new Usuario();
@@ -39,6 +41,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: UsuarioController/Details/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult>  Details(int id)
         {
             var usuario = await usuarioBL.ObtenerPorIdAsync(new Usuario { Id = id });
@@ -47,6 +50,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: UsuarioController/Create
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Roles = await rolBL.ObtenerTodosAsync();
@@ -55,6 +59,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: UsuarioController/Create
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -74,6 +79,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: UsuarioController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Edit(Usuario pUsuario)
         {
             var taskObtenerPorId = usuarioBL.ObtenerPorIdAsync(pUsuario);
@@ -85,6 +91,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: UsuarioController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -104,6 +111,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: UsuarioController/Delete/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Delete(Usuario pUsuario)
         {
             var usuario = await usuarioBL.ObtenerPorIdAsync(pUsuario);
@@ -112,6 +120,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: UsuarioController/Delete/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -186,6 +195,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: UsuarioController/CambiarPassword
+       // [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
         public async Task<IActionResult> CambiarPassword()
         {
             var usuarios = await usuarioBL.BuscarAsync(new Usuario { Login = User.Identity.Name, Top_Aux = 1 });
@@ -195,6 +205,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: UsuarioController/CambiarPassword
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CambiarPassword(Usuario pUsuario, string pPasswordAnt)
