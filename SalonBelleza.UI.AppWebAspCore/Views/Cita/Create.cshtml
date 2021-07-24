@@ -4,6 +4,7 @@
     ViewData["Title"] = "Create";
     List<SalonBelleza.EntidadesDeNegocio.Usuario> usuarios = ViewBag.Usuarios as List<SalonBelleza.EntidadesDeNegocio.Usuario>;
     List<SalonBelleza.EntidadesDeNegocio.Cliente> clientes = ViewBag.Clientes as List<SalonBelleza.EntidadesDeNegocio.Cliente>;
+    List<SalonBelleza.EntidadesDeNegocio.Servicio> servicios = ViewBag.Servicios as List<SalonBelleza.EntidadesDeNegocio.Servicio>;
 }
 
 <h1>Crear Cita</h1>
@@ -21,7 +22,7 @@
                 </h2>
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
-                        @*campos a llenar*@
+                        @*codigo html de campos a llenar*@
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -75,6 +76,7 @@
                                 </div>
                             </div>
                         </div>
+                        @*aqui termina codigo html de campos a llenar*@
                     </div>
                 </div>
             </div>
@@ -88,10 +90,19 @@
                     <div class="accordion-body">
 
                         @*aqui comienza el codigo html de manejar*@
-                        <input type="text" name="Id">
+                        <div class="form-group">
+                            <label>Servicios</label>
+                            <select>
+                                <option selected value="">SELECCIONAR</option>
+                                @foreach (var item in servicios)
+                                {
+                                    <option value="@item.Id">@item.Nombre</option>
+                                }
+                            </select>
+                        </div>
 
                         <button onclick="add();" type="button">
-                            Unirse
+                            Agregar
                         </button>
 
                         <table  id="table">

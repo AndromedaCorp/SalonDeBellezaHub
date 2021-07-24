@@ -17,6 +17,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         CitaBL citaBL = new CitaBL();
         ClienteBL clienteBL = new ClienteBL();
         UsuarioBL usuarioBL = new UsuarioBL();
+        ServicioBL servicioBL = new ServicioBL();
         // GET: CitaController
         public async Task<IActionResult> Index(Cita pCita = null)
         {
@@ -52,6 +53,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             ViewBag.Clientes = await clienteBL.ObtenerTodosAsync();
             ViewBag.Usuarios = await usuarioBL.ObtenerTodosAsync();
+            ViewBag.servicios = await servicioBL.ObtenerTodosAsync();
             ViewBag.Error = "";
             return View();
         }
@@ -72,6 +74,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 ViewBag.Error = ex.Message;
                 ViewBag.Clientes = await clienteBL.ObtenerTodosAsync();
                 ViewBag.Usuarios = await usuarioBL.ObtenerTodosAsync();
+                ViewBag.servicios = await servicioBL.ObtenerTodosAsync();
                 return View(pCita); //si ocurrio un error se redirecciona a la vista create con el parametro
             }
         }
