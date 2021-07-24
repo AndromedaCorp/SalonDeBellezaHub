@@ -17,6 +17,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
     {
         RolBL rolBL = new RolBL();
         // GET: RolController
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Index(Rol pRol = null) 
         {
             if (pRol == null)
@@ -31,6 +32,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Details/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Details(int id) 
         {
             var rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = id });
@@ -38,6 +40,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Create
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public IActionResult Create()
         {
             ViewBag.Error = "";
@@ -45,6 +48,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: RolController/Create
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Rol pRol) 
@@ -62,6 +66,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task <IActionResult> Edit (Rol pRol) 
         {
             var rol = await rolBL.ObtenerPorIdAsync(pRol);
@@ -70,6 +75,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: RolController/Edit/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
 
@@ -88,6 +94,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Delete/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Delete(Rol pRol) 
         {
             ViewBag.Error = "";
@@ -96,6 +103,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: RolController/Delete/5
+        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, Rol pRol) 
@@ -111,6 +119,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(pRol);
             }
         }
-        
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
+
     }
 }
