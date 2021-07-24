@@ -42,6 +42,9 @@ namespace SalonBelleza.AccesoADatos
             ////String de conexion Hector
             //optionsBuilder.UseSqlServer(@"Data Source=LAPTOP-RMHJKBUU;Initial Catalog=SalonBelleza;Integrated Security=True;");
 
+            //String de conexion deysi
+            optionsBuilder.UseSqlServer(@"Data Source=LAPTOP-HDM3K5RA\SQLEXPRESS;Initial Catalog=salonbelleza;Integrated Security=True;");
+
             //String de conexion Andy!
             //optionsBuilder.UseSqlServer(@"Data Source=DELL-LATITUDE\SQLEXPRESS;Initial Catalog=SalonBelleza;Integrated Security=True;");
 
@@ -49,7 +52,7 @@ namespace SalonBelleza.AccesoADatos
             //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G0IU72C\SQLEXPRESS;Initial Catalog=SalonBelleza;Integrated Security=True;");
 
             //String de conexion a la base remota
-            optionsBuilder.UseSqlServer(@"Data Source=198.38.83.200;Initial Catalog=eliqsv_salonbelleza2;Persist Security Info=True;User ID=eliqsv_andromeda;Password=fszlq6vgdxuhecrmoaiw");
+           // optionsBuilder.UseSqlServer(@"Data Source=198.38.83.200;Initial Catalog=eliqsv_salonbelleza2;Persist Security Info=True;User ID=eliqsv_andromeda;Password=fszlq6vgdxuhecrmoaiw");
 
         }
 

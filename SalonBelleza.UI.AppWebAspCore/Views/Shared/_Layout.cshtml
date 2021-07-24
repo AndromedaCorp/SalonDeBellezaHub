@@ -7,10 +7,65 @@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />*@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="~/css/site.css" />
+    <!--Fontawesome CDN-->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <style>
+        /*
+        .container {
+            padding: 10px;
+            background: #7F7FD5;
+            background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+            background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+        }
+
+        footer {
+            position: static;
+            color: #000000;
+            font-family: 'Gothic';
+            text-align: center;
+        }
+
+        .Cfooter {
+            color: #000000;
+        }
+
+        .navbar-brand {
+            color: azure;
+        }
+
+        .nav-link {
+            color: azure;
+           
+        }
+        a {
+            color: azure;
+            font-family: arial;
+            text-decoration: none;
+        }
+
+            a:hover {
+                color: azure;
+                font-family: arial;
+                text-decoration: none;
+            }
+
+          .nav-link:{
+                color: azure;
+                font-family: arial;
+                text-decoration: none;
+            }
+
+           .nav-link:hover {
+                color: azure;
+                font-family: arial;
+                text-decoration: none;
+            }
+        */
+    </style>
 </head>
 <body style="background-color: #e6e6e6; ">
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-white" style="background: #004D40;">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Salon de Belleza</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavAltMarkup"
@@ -68,7 +123,7 @@
         </nav>
     </header>
     <br>
-    <div class="container" style="background-color: #fff; border: 3px ridge #ddd6d6; border-radius: 15px 15px 15px 15px ">
+    <div class="container" style="background-color: #000000; border: 4px ridge #000000; border-radius: 15px 15px 15px 15px ">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
@@ -76,8 +131,8 @@
 
     <br />
 
-    <footer class="border-top footer text-muted" style="background-color:white;">
-        <div class="container">
+    <footer class="border-top footer text-muted" style=" background-color: #004D40">
+        <div class="Cfooter">
             &copy; 2021 - Salon de Belleza
         </div>
     </footer>
