@@ -8,6 +8,13 @@
     int[] tops = { 10, 20, 50, 100, 500, 10000, -1 };
     int topActual = Convert.ToInt32(ViewBag.Top);
 }
+<style>
+
+    .btn {
+        width:15%;
+    }
+
+</style>
 
 <h1>Buscar</h1>
 <div class="row">
@@ -40,6 +47,7 @@
                     </div>
                 </div>
             </div>
+            <br>
             <div class="form-group">
                 <input type="submit" value="Buscar" class="btn btn-primary" />
                 @if (User.IsInRole("ADMINISTRADOR"))
