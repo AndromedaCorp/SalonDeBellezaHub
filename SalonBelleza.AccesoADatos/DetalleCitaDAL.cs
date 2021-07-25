@@ -111,7 +111,18 @@ namespace SalonBelleza.AccesoADatos
                 }
                 return detallecita;
             }
-            #endregion
+        public static async Task<List<DetalleCita>> BuscarIncluirServicioAsync(DetalleCita pDetalleCita)
+        {
+            var detallecita = new List<DetalleCita>();
+            using (var dbContexto = new DBContexto()) //la palabra using encierra
+            {
+                var select = dbContexto.DetalleCita.AsQueryable(); //esto es como un SELECT * FROM
+                select = QuerySelect(select, pDetalleCita).Include(s=> s.Servicio);
+                detallecita = await select.ToListAsync();
+            }
+            return detallecita;
+        }
+        #endregion
 
         public static void CrearDetalles(DBContexto pContext,List<DetalleCita> pDetalles, Cita pCita) 
         {

@@ -65,7 +65,32 @@
         }
     </dl>
 </div>
-
+@if (Model.DetalleCita != null && Model.DetalleCita.Count > 0)
+{
+<table class="table table-sm" id="table">
+    <thead>
+        <tr>
+            <td style="display:none">Id</td>
+            <td style="display:none">IdServicio</td>
+            <td>Servicio</td>
+            <td>Precio</td>
+            <td>Duracion</td>
+        </tr>
+    </thead>
+    <tbody id="tbd">
+        @foreach (var item in Model.DetalleCita)
+        {
+        <tr>
+            <td style="display:none">@item.Id</td>
+            <td style="display:none">@item.IdServicio</td>
+            <td>@item.Servicio.Nombre</td>
+            <td>@item.Precio</td>
+            <td>@item.Duracion</td>
+         </tr>
+        }
+    </tbody>
+</table>
+}
 <div class="row">
     <div class="col-md-12">
         <div class="form-group">

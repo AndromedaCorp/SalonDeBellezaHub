@@ -225,7 +225,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
-
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
 
     }
 }

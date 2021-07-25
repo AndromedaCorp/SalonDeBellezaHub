@@ -42,9 +42,12 @@ namespace SalonBelleza.LogicaDeNegocio
         {
             return await DetalleCitaDAL.BuscarAsync(pDetalleCita);
         }
+        public async Task<List<DetalleCita>> BuscarIncluirServicioAsync(DetalleCita pDetalleCita)
+        {
+            return await DetalleCitaDAL.BuscarIncluirServicioAsync(pDetalleCita);
+        }
 
-
-
+        // 
 
 
     }

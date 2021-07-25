@@ -23,7 +23,7 @@ namespace SalonBelleza.AccesoADatos
                     {
                         pCita.FechaRegistrada = DateTime.Now; //Esta fecha se tomara al momento de crearse la cita
                         dbContexto.Add(pCita);
-                        DetalleCitaDAL.CrearDetalles(dbContexto, pCita.DetalleCita, pCita);
+                      //  DetalleCitaDAL.CrearDetalles(dbContexto, pCita.DetalleCita, pCita);
                         result = await dbContexto.SaveChangesAsync();
                         await transaccion.CommitAsync();
                     }

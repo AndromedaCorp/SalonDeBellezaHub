@@ -18,6 +18,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         ClienteBL clienteBL = new ClienteBL();
         UsuarioBL usuarioBL = new UsuarioBL();
         ServicioBL servicioBL = new ServicioBL();
+        DetalleCitaBL detalleCitaBL = new DetalleCitaBL();
         // GET: CitaController
         public async Task<IActionResult> Index(Cita pCita = null)
         {
@@ -43,8 +44,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Details(int id)
         {
             var cita = await citaBL.ObtenerPorIdAsync(new Cita { Id = id });
-            cita.Cliente = await clienteBL.ObtenerPorIdAsync(new Cliente { Id = cita.IdCliente });
-            cita.Usuario = await usuarioBL.ObtenerPorIdAsync(new Usuario { Id = cita.IdUsuario });
+            var taskCliente = clienteBL.ObtenerPorIdAsync(new Cliente { Id = cita.IdCliente });
+            var taskUsuario= usuarioBL.ObtenerPorIdAsync(new Usuario { Id = cita.IdUsuario });
+            var taskDetalles = detalleCitaBL.BuscarIncluirServicioAsync(new DetalleCita { IdCita = cita.Id });
+            cita.Cliente = await taskCliente;
+            cita.Usuario = await taskUsuario;
+            cita.DetalleCita = await taskDetalles;
             return View(cita);
         }
 
@@ -65,8 +70,8 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                int result = 0;
-                //int result = await citaBL.CrearAsync(pCita);
+               // int result = 0;
+                int result = await citaBL.CrearAsync(pCita);
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
