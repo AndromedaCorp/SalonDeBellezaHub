@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalonBelleza.LogicaDeNegoci
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SalonBelleza.UI.AppWebAspCore", "SalonBelleza.UI.AppWebAspCore\SalonBelleza.UI.AppWebAspCore.csproj", "{796EED2C-88FF-4955-B6D3-E0C09339C207}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SalonBelleza.WebAPI", "SalonBelleza.WebAPI\SalonBelleza.WebAPI.csproj", "{D34C5F07-D541-41C2-8ED3-CD748CBCDC7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{796EED2C-88FF-4955-B6D3-E0C09339C207}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{796EED2C-88FF-4955-B6D3-E0C09339C207}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{796EED2C-88FF-4955-B6D3-E0C09339C207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34C5F07-D541-41C2-8ED3-CD748CBCDC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34C5F07-D541-41C2-8ED3-CD748CBCDC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34C5F07-D541-41C2-8ED3-CD748CBCDC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34C5F07-D541-41C2-8ED3-CD748CBCDC7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
