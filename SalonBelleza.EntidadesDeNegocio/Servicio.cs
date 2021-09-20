@@ -10,6 +10,7 @@ namespace SalonBelleza.EntidadesDeNegocio
 {   
    public class Servicio
     {
+        // Prueba comentario :3
        [Key]
        public int Id { get; set; }
 
