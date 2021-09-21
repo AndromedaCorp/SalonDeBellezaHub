@@ -84,7 +84,7 @@ namespace SalonBelleza.WebAPI.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("Busacar")]
+        [HttpPost("Buscar")]
         public async Task<List<Rol>> Buscar([FromBody] Object pRol)
         {
             var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
