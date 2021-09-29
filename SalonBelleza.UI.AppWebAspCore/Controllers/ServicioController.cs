@@ -10,7 +10,9 @@ using SalonBelleza.EntidadesDeNegocio;
 using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
+using System.Net.Http;
+using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
@@ -18,8 +20,26 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
     public class ServicioController : Controller
     {
 
-        ServicioBL ServicioBL = new ServicioBL();
-        // GET: ServicioController
+        // Codigo agregar para consumir la Web API
+        private readonly HttpClient httpClient;
+        public ServicioController(HttpClient client)
+        {
+            httpClient = client;
+        }
+        private async Task<Servicio> ObtenerRolPorIdAsync(Servicio pServicio)
+        {
+            Servicio servicio = new Servicio();
+            var response = await httpClient.GetAsync("Servicio/" + pServicio.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                servicio = JsonSerializer.Deserialize<Servicio>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return servicio;
+        }
+        //***************************************
+        // GET: RolController
         public async Task<IActionResult> Index(Servicio pServicio = null)
         {
             if (pServicio == null)
@@ -28,34 +48,55 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 pServicio.Top_Aux = 10;
             else if (pServicio.Top_Aux == -1)
                 pServicio.Top_Aux = 0;
-            var servicios = await ServicioBL.BuscarAsync(pServicio);
+            // Codigo agregar para consumir la Web API
+            var servicios = new List<Servicio>();
+            var response = await httpClient.PostAsJsonAsync("Servicio/Buscar", pServicio);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                servicios = JsonSerializer.Deserialize<List<Servicio>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            //******************************************
             ViewBag.Top = pServicio.Top_Aux;
             return View(servicios);
         }
 
-        // GET: ServicioController/Details/5
+        // GET: RolController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var servicio = await ServicioBL.ObtenerPorIdAsync(new Servicio { Id = id });
+            // Codigo agregar para consumir la Web API
+            Servicio servicio = await ObtenerRolPorIdAsync(new Servicio { Id = id });
+            //*******************************************************
             return View(servicio);
         }
 
-        // GET: ServicioController/Create
-        public ActionResult Create()
+        // GET: RolController/Create
+        public IActionResult Create()
         {
             ViewBag.Error = "";
             return View();
         }
 
-        // POST: ServicioController/Create
+        // POST: RolController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Servicio pServicio)
         {
             try
             {
-                int result = await ServicioBL.CrearAsync(pServicio);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PostAsJsonAsync("Servico", pServicio);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pServicio);
+                }
+                // ********************************************
             }
             catch (Exception ex)
             {
@@ -64,23 +105,35 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
-        // GET: ServicioController/Edit/5
+        // GET: RolController/Edit/5
         public async Task<IActionResult> Edit(Servicio pServicio)
         {
-            var servicio = await ServicioBL.ObtenerPorIdAsync(pServicio);
+            // Codigo agregar para consumir la Web API
+            Servicio servicio = await ObtenerRolPorIdAsync(pServicio);
+            // ***********************************************
             ViewBag.Error = "";
             return View(servicio);
         }
 
-        // POST: ServicioController/Edit/5
+        // POST: RolController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Servicio pServicio)
         {
             try
             {
-                int result = await ServicioBL.ModificarAsync(pServicio);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PutAsJsonAsync("Servicio/" + id, pServicio);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pServicio);
+                }
+                // ************************************************
             }
             catch (Exception ex)
             {
@@ -89,23 +142,35 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
-        // GET: ServicioController/Delete/5
+        // GET: RolController/Delete/5
         public async Task<IActionResult> Delete(Servicio pServicio)
         {
             ViewBag.Error = "";
-            var servicio = await ServicioBL.ObtenerPorIdAsync(pServicio);
+            // Codigo agregar para consumir la Web API
+            Servicio servicio = await ObtenerRolPorIdAsync(pServicio);
+            // ************************************************
             return View(servicio);
         }
 
-        // POST: ServicioController/Delete/5
+        // POST: RolController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, Servicio pServicio)
         {
             try
             {
-                int result = await ServicioBL.EliminarAsync(pServicio);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.DeleteAsync("Servicio/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pServicio);
+                }
+                // **********************************************
             }
             catch (Exception ex)
             {
@@ -113,5 +178,6 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(pServicio);
             }
         }
+
     }
 }
