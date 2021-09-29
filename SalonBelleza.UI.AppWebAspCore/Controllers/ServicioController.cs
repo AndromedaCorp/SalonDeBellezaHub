@@ -19,7 +19,6 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class ServicioController : Controller
     {
-
         // Codigo agregar para consumir la Web API
         private readonly HttpClient httpClient;
         public ServicioController(HttpClient client)
@@ -39,7 +38,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return servicio;
         }
         //***************************************
-        // GET: RolController
+        // GET: ServicioController
         public async Task<IActionResult> Index(Servicio pServicio = null)
         {
             if (pServicio == null)
@@ -62,7 +61,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicios);
         }
 
-        // GET: RolController/Details/5
+        // GET: ServicioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
             // Codigo agregar para consumir la Web API
@@ -71,14 +70,14 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicio);
         }
 
-        // GET: RolController/Create
+        // GET: ServicioController/Create
         public IActionResult Create()
         {
             ViewBag.Error = "";
             return View();
         }
 
-        // POST: RolController/Create
+        // POST: ServicioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Servicio pServicio)
@@ -86,7 +85,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 // Codigo agregar para consumir la Web API
-                var response = await httpClient.PostAsJsonAsync("Servico", pServicio);
+                var response = await httpClient.PostAsJsonAsync("Servicio", pServicio);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -105,7 +104,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
-        // GET: RolController/Edit/5
+        // GET: ServicioController/Edit/5
         public async Task<IActionResult> Edit(Servicio pServicio)
         {
             // Codigo agregar para consumir la Web API
@@ -178,6 +177,5 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(pServicio);
             }
         }
-
     }
 }
