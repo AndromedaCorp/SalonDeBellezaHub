@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 //***********
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
 
 namespace SalonBelleza.UI.AppWebAspCore
 {
@@ -39,6 +40,14 @@ namespace SalonBelleza.UI.AppWebAspCore
                 o.AccessDeniedPath= new PathString("/Usuario/AccessDenied");
                 o.SlidingExpiration = true;
             });
+
+            // Agregar el cliente HttpClient para consumir la Web API
+            services.AddTransient(sp => new HttpClient
+            {
+                BaseAddress = new Uri("https://localhost:44306/api/")
+            });
+            //**
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
