@@ -14,7 +14,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Net.Http.Json;
 
-namespace SeguridadWeb.UI.AppWebAspCore.Controllers
+namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class RolController : Controller

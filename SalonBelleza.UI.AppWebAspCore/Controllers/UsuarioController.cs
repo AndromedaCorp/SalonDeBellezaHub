@@ -4,26 +4,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-//**************************************************************************
+
+/********************************/
 using SalonBelleza.EntidadesDeNegocio;
 using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-
+/****************Using para consumir API************************/
+using System.Net.Http;
+using System.Text.Json;
+using System.Net.Http.Json;
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
-    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-   
-
+    //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class UsuarioController : Controller
     {
         UsuarioBL usuarioBL = new UsuarioBL();
         RolBL rolBL = new RolBL();
+
+        private readonly HttpClient _httpClient;
+        public UsuarioController(HttpClient client)
+        {
+            _httpClient = client;
+        }
+
+
         // GET: UsuarioController
-         [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Index(Usuario pUsuario = null)
         {
             if (pUsuario == null)
@@ -32,129 +41,254 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 pUsuario.Top_Aux = 10;
             else if (pUsuario.Top_Aux == -1)
                 pUsuario.Top_Aux = 0;
-            var taskBuscar = usuarioBL.BuscarIncluirRolesAsync(pUsuario);
-            var taskObtenerTodosRoles = rolBL.ObtenerTodosAsync();
-            var usuarios = await taskBuscar;
+
+            var usuarios = new List<Usuario>();
+            var roles = new List<Rol>();
+
+            var response = await _httpClient.PostAsJsonAsync("Usuario/Buscar", pUsuario);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            var responseRol = await _httpClient.GetAsync("Rol");
+            if (responseRol.IsSuccessStatusCode)
+            {
+                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            //var taskBuscar = usuarioBL.BuscarIncluirRolesAsync(pUsuario);
+            //var taskObtenerTodosRoles = rolBL.ObtenerTodosAsync();
+            //var usuarios = await taskBuscar;
             ViewBag.Top = pUsuario.Top_Aux;
-            ViewBag.Roles = await taskObtenerTodosRoles;
+            ViewBag.Roles = roles;
             return View(usuarios);
         }
 
+
         // GET: UsuarioController/Details/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult>  Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var usuario = await usuarioBL.ObtenerPorIdAsync(new Usuario { Id = id });
-            usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
-            return View(usuario); 
+            Usuario usuario = new Usuario();
+            var response = await _httpClient.GetAsync("Usuario/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            Rol rol = new Rol();
+            var idRol = usuario.IdRol;
+            var responseRol = await _httpClient.GetAsync("Rol/" + idRol);
+            if (responseRol.IsSuccessStatusCode)
+            {
+                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBodyRol,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            usuario.Rol = rol;
+            return View(usuario);
         }
 
+
         // GET: UsuarioController/Create
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Create()
         {
-            ViewBag.Roles = await rolBL.ObtenerTodosAsync();
+            var roles = new List<Rol>();
+            var response = await _httpClient.GetAsync("Rol");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                roles = JsonSerializer.Deserialize<List<Rol>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            ViewBag.Roles = roles;
             ViewBag.Error = "";
             return View();
         }
 
+
         // POST: UsuarioController/Create
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Create(Usuario pUsuario)
         {
             try
             {
-                int result = await usuarioBL.CrearAsync(pUsuario);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.PostAsJsonAsync("Usuario", pUsuario);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pUsuario);
+                }
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                ViewBag.Roles = await rolBL.ObtenerTodosAsync();
+                //ViewBag.Roles = await rolBL.ObtenerTodosAsync();
                 return View(pUsuario);
             }
         }
 
+
         // GET: UsuarioController/Edit/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Edit(Usuario pUsuario)
         {
-            var taskObtenerPorId = usuarioBL.ObtenerPorIdAsync(pUsuario);
-            var taskObtenerTodosRoles = rolBL.ObtenerTodosAsync();
-            var usuario = await taskObtenerPorId;
-            ViewBag.Roles = await taskObtenerTodosRoles;
+            var usuario = new Usuario();
+
+            var response = await _httpClient.GetAsync("Usuario/" + pUsuario.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            var roles = new List<Rol>();
+            //Para cargar todos los roles.
+            var responseRol = await _httpClient.GetAsync("Rol");
+            if (responseRol.IsSuccessStatusCode)
+            {
+                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            ViewBag.Roles = roles;
             ViewBag.Error = "";
             return View(usuario);
         }
 
+
         // POST: UsuarioController/Edit/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Edit(int id, Usuario pUsuario)
         {
             try
             {
-                int result = await usuarioBL.ModificarAsync(pUsuario);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.PutAsJsonAsync("Usuario/" + id, pUsuario);
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    var roles = new List<Rol>();
+                    //Para cargar todos los roles.
+                    var responseRol = await _httpClient.GetAsync("Rol");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                        roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
+                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    }
+
+                    ViewBag.Roles = roles;
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pUsuario);
+                }
+                // int result = await rolBL.ModificarAsync(pRol);
+
             }
             catch (Exception ex)
             {
+                var roles = new List<Rol>();
+                //Para cargar todos los roles.
+                var responseRol = await _httpClient.GetAsync("Rol");
+                if (responseRol.IsSuccessStatusCode)
+                {
+                    var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                    roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+
+                ViewBag.Roles = roles;
                 ViewBag.Error = ex.Message;
-                ViewBag.Roles = await rolBL.ObtenerTodosAsync();
                 return View(pUsuario);
             }
         }
 
+
         // GET: UsuarioController/Delete/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public async Task<IActionResult> Delete(Usuario pUsuario)
         {
-            var usuario = await usuarioBL.ObtenerPorIdAsync(pUsuario);
-            usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol});
+            Usuario usuario = new Usuario();
+            var response = await _httpClient.GetAsync("Usuario/" + pUsuario.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            Rol rol = new Rol();
+            var idRol = usuario.IdRol;
+            var responseRol = await _httpClient.GetAsync("Rol/" + idRol);
+            if (responseRol.IsSuccessStatusCode)
+            {
+                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBodyRol,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+
+            usuario.Rol = rol;
             return View(usuario);
         }
 
+
         // POST: UsuarioController/Delete/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> Delete(int id, Usuario pUsuario)
         {
             try
             {
-                int result = await usuarioBL.EliminarAsync(pUsuario);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.DeleteAsync("Usuario/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pUsuario);
+                }
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                var usuario = await usuarioBL.ObtenerPorIdAsync(pUsuario);
-                if (usuario == null)
-                    usuario = new Usuario();
-                if (usuario.Id > 0)
-                    usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
-                return View(usuario);
+                //var usuario = await usuarioBL.ObtenerPorIdAsync(pUsuario);
+                //if (usuario == null)
+                //    usuario = new Usuario();
+                //if (usuario.Id > 0)
+                //    usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
+                return View(pUsuario);
             }
         }
 
-        // GET: UsuarioController/Login
+        // GET: UsuarioController/Create
         [AllowAnonymous]
         public async Task<IActionResult> Login(string ReturnUrl = null)
         {
-            //Esta linea sirve para cerrar sesion. 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             ViewBag.Url = ReturnUrl;
             ViewBag.Error = "";
             return View();
         }
 
-        // POST: UsuarioController/Login
+        // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
@@ -163,7 +297,6 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 var usuario = await usuarioBL.LoginAsync(pUsuario);
-                //Condiciones que debe cumplir el usuario para tener credenciales correctas.
                 if (usuario != null && usuario.Id > 0 && pUsuario.Login == usuario.Login)
                 {
                     usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
@@ -185,27 +318,23 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(new Usuario { Login = pUsuario.Login });
             }
         }
-
         [AllowAnonymous]
         public async Task<IActionResult> CerrarSesion(string ReturnUrl = null)
         {
-            //Esta linea sirve para cerrar sesion. 
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login","usuario");
+            return RedirectToAction("Login", "Usuario");
         }
-
-        // GET: UsuarioController/CambiarPassword
-       // [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+        // GET: UsuarioController/Create
         public async Task<IActionResult> CambiarPassword()
         {
+
             var usuarios = await usuarioBL.BuscarAsync(new Usuario { Login = User.Identity.Name, Top_Aux = 1 });
             var usuarioActual = usuarios.FirstOrDefault();
             ViewBag.Error = "";
             return View(usuarioActual);
         }
 
-        // POST: UsuarioController/CambiarPassword
-      
+        // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CambiarPassword(Usuario pUsuario, string pPasswordAnt)
@@ -214,7 +343,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             {
                 int result = await usuarioBL.CambiarPasswordAsync(pUsuario, pPasswordAnt);
                 await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                return RedirectToAction("Login","usuario");
+                return RedirectToAction("Login", "Usuario");
             }
             catch (Exception ex)
             {
@@ -224,12 +353,5 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(usuarioActual);
             }
         }
-
-        [AllowAnonymous]
-        public IActionResult AccessDenied()
-        {
-            return View();
-        }
-
     }
 }
