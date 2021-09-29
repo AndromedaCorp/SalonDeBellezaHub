@@ -26,7 +26,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             httpClient = client;
         }
-        private async Task<Servicio> ObtenerRolPorIdAsync(Servicio pServicio)
+        private async Task<Servicio> ObtenerServicioPorIdAsync(Servicio pServicio)
         {
             Servicio servicio = new Servicio();
             var response = await httpClient.GetAsync("Servicio/" + pServicio.Id);
@@ -66,7 +66,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // Codigo agregar para consumir la Web API
-            Servicio servicio = await ObtenerRolPorIdAsync(new Servicio { Id = id });
+            Servicio servicio = await ObtenerServicioPorIdAsync(new Servicio { Id = id });
             //*******************************************************
             return View(servicio);
         }
@@ -109,7 +109,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Edit(Servicio pServicio)
         {
             // Codigo agregar para consumir la Web API
-            Servicio servicio = await ObtenerRolPorIdAsync(pServicio);
+            Servicio servicio = await ObtenerServicioPorIdAsync(pServicio);
             // ***********************************************
             ViewBag.Error = "";
             return View(servicio);
@@ -147,7 +147,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             ViewBag.Error = "";
             // Codigo agregar para consumir la Web API
-            Servicio servicio = await ObtenerRolPorIdAsync(pServicio);
+            Servicio servicio = await ObtenerServicioPorIdAsync(pServicio);
             // ************************************************
             return View(servicio);
         }
