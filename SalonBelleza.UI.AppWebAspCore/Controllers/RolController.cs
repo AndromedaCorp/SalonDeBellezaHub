@@ -4,20 +4,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-/*********************************/
+
+/********************************/
 using SalonBelleza.EntidadesDeNegocio;
 using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Net.Http;
+using System.Text.Json;
+using System.Net.Http.Json;
 
-namespace SalonBelleza.UI.AppWebAspCore.Controllers
+namespace SeguridadWeb.UI.AppWebAspCore.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class RolController : Controller
     {
         RolBL rolBL = new RolBL();
+
+        private readonly HttpClient _httpClient;
+
+        public RolController(HttpClient client)
+        {
+            _httpClient = client;
+        }
+
+
         // GET: RolController
-        public async Task<IActionResult> Index(Rol pRol = null) 
+        public async Task<IActionResult> Index(Rol pRol = null)
         {
             if (pRol == null)
                 pRol = new Rol();
@@ -25,21 +38,37 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 pRol.Top_Aux = 10;
             else if (pRol.Top_Aux == -1)
                 pRol.Top_Aux = 0;
-            var roles = await rolBL.BuscarAsync(pRol);
+
+            var roles = new List<Rol>();
+            var response = await _httpClient.PostAsJsonAsync("Rol/Buscar", pRol);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                roles = JsonSerializer.Deserialize<List<Rol>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            //var roles = await rolBL.BuscarAsync(pRol).    
             ViewBag.Top = pRol.Top_Aux;
             return View(roles);
         }
 
         // GET: RolController/Details/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Details(int id) 
+        public async Task<IActionResult> Details(int id)
+
         {
-            var rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = id });
+            Rol rol = new Rol();
+            var response = await _httpClient.GetAsync("Rol/" + id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            //var rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = id });
             return View(rol);
         }
 
         // GET: RolController/Create
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         public IActionResult Create()
         {
             ViewBag.Error = "";
@@ -47,17 +76,24 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // POST: RolController/Create
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Rol pRol) 
+        public async Task<IActionResult> Create(Rol pRol)
         {
-            try 
+            try
             {
-                int result = await rolBL.CrearAsync(pRol);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.PostAsJsonAsync("Rol", pRol);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pRol);
+                }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 return View(pRol);
@@ -65,27 +101,42 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Edit/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
-        public async Task <IActionResult> Edit (Rol pRol) 
+        public async Task<IActionResult> Edit(Rol pRol)
         {
-            var rol = await rolBL.ObtenerPorIdAsync(pRol);
-            ViewBag.Eroor = "";
+            var rol = new Rol();
+            var response = await _httpClient.GetAsync("Rol/" + pRol.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            // var rol = await rolBL.ObtenerPorIdAsync(pRol);
+            ViewBag.Error = "";
             return View(rol);
         }
 
         // POST: RolController/Edit/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public async Task<IActionResult> Edit(int id, Rol pRol) 
+        public async Task<IActionResult> Edit(int id, Rol pRol)
         {
-            try 
+            try
             {
-                int result = await rolBL.ModificarAsync(pRol);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.PutAsJsonAsync("Rol/" + id, pRol);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pRol);
+                }
+                // int result = await rolBL.ModificarAsync(pRol);
+
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 return View(pRol);
@@ -93,26 +144,40 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         // GET: RolController/Delete/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
-        public async Task<IActionResult> Delete(Rol pRol) 
+        public async Task<IActionResult> Delete(Rol pRol)
         {
+            var rol = new Rol();
+            var response = await _httpClient.GetAsync("Rol/" + pRol.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
             ViewBag.Error = "";
-            var rol = await rolBL.ObtenerPorIdAsync(pRol);
+            //var rol = await rolBL.ObtenerPorIdAsync(pRol);
             return View(rol);
         }
 
         // POST: RolController/Delete/5
-        [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme, Roles = "ADMINISTRADOR")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, Rol pRol) 
+        public async Task<IActionResult> Delete(int id, Rol pRol)
         {
-            try 
+            try
             {
-                int result = await rolBL.EliminarAsync(pRol);
-                return RedirectToAction(nameof(Index));
+                var response = await _httpClient.DeleteAsync("Rol/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pRol);
+                }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
                 return View(pRol);
