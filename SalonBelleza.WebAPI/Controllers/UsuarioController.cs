@@ -16,19 +16,16 @@ namespace SalonBelleza.WebAPI.Controllers
     [ApiController]
     public class UsuarioController : ControllerBase
     {
-        //Creando objeto de tipo privado e instanciandolo
         private UsuarioBL usuarioBL = new UsuarioBL();
         // GET: api/<UsuarioController>
         [HttpGet]
-        //Haciendo cambios dentro del metodo GET para trabajar con metodo asyncronico
-        public async Task<IEnumerable<Usuario>> Get()//Convirtimos el metodo en asincronico,procesamos informacion por medio de task y definimos respuesta de tipo usuario
+        public async Task<IEnumerable<Usuario>> Get()
         {
             return await usuarioBL.ObtenerTodosAsync();
         }
 
         // GET api/<UsuarioController>/5
         [HttpGet("{id}")]
-        //Haciendo cambios dentro del metodo GET que espera un parametro Id
         public async Task<Usuario> Get(int id)
         {
             Usuario usuario = new Usuario();
@@ -38,7 +35,6 @@ namespace SalonBelleza.WebAPI.Controllers
 
         // POST api/<UsuarioController>
         [HttpPost]
-        //Haciendo cambios dentro del metodo POST para trabajar con metodo asyncronico
         public async Task<ActionResult> Post([FromBody] Usuario usuario)
         {
             try
@@ -48,16 +44,18 @@ namespace SalonBelleza.WebAPI.Controllers
             }
             catch (Exception)
             {
+
                 return BadRequest();
             }
-
         }
 
         // PUT api/<UsuarioController>/5
         [HttpPut("{id}")]
-        //Haciendo cambios dentro del metodo PUT que espera un parametro Id
-        public async Task<ActionResult> Put(int id, [FromBody] Usuario usuario)
+        public async Task<ActionResult> Put(int id, [FromBody] object pUsuario)
         {
+            var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            string strUsuario = JsonSerializer.Serialize(pUsuario);
+            Usuario usuario = JsonSerializer.Deserialize<Usuario>(strUsuario, option);
             if (usuario.Id == id)
             {
                 await usuarioBL.ModificarAsync(usuario);
@@ -70,9 +68,9 @@ namespace SalonBelleza.WebAPI.Controllers
 
         }
 
+
         // DELETE api/<UsuarioController>/5
         [HttpDelete("{id}")]
-        //Haciendo cambios dentro del metodo DELETE que espera un parametro Id
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -84,19 +82,48 @@ namespace SalonBelleza.WebAPI.Controllers
             }
             catch (Exception)
             {
-
                 return BadRequest();
             }
-
         }
-        //Agregando metodo logico que nos permitira Buscar
+
         [HttpPost("Buscar")]
         public async Task<List<Usuario>> Buscar([FromBody] object pUsuario)
         {
+
             var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
             string strUsuario = JsonSerializer.Serialize(pUsuario);
             Usuario usuario = JsonSerializer.Deserialize<Usuario>(strUsuario, option);
-            return await usuarioBL.BuscarAsync(usuario);
+            var usuarios = await usuarioBL.BuscarIncluirRolesAsync(usuario);
+            usuarios.ForEach(s => s.Rol.Usuario = null); // Evitar la redundacia de datos
+            return usuarios;
+
+        }
+        [HttpPost("Login")]
+        public async Task<Usuario> Login([FromBody] object pUsuario)
+        {
+
+            var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            string strUsuario = JsonSerializer.Serialize(pUsuario);
+            Usuario usuario = JsonSerializer.Deserialize<Usuario>(strUsuario, option);
+            return await usuarioBL.LoginAsync(usuario);
+
+        }
+        [HttpPost("CambiarPassword")]
+        public async Task<ActionResult> CambiarPassword([FromBody] Object pUsuario)
+        {
+            try
+            {
+                var option = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                string strUsuario = JsonSerializer.Serialize(pUsuario);
+                Usuario usuario = JsonSerializer.Deserialize<Usuario>(strUsuario, option);
+                await usuarioBL.CambiarPasswordAsync(usuario, usuario.ConfirmarPassword_aux);
+                return Ok();
+            }
+            catch (Exception)
+            {
+
+                return BadRequest();
+            }
         }
     }
 }

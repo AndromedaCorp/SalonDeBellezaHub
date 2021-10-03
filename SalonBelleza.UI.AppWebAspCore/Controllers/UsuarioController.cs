@@ -7,31 +7,65 @@ using System.Threading.Tasks;
 
 /********************************/
 using SalonBelleza.EntidadesDeNegocio;
-using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System.Security.Claims;
-/****************Using para consumir API************************/
+
+// Libreria necesarias para consumir la Web API
 using System.Net.Http;
-using System.Text.Json;
 using System.Net.Http.Json;
+using System.Text.Json;
+//**********************************************
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
-    //[Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class UsuarioController : Controller
     {
-        UsuarioBL usuarioBL = new UsuarioBL();
-        RolBL rolBL = new RolBL();
-
-        private readonly HttpClient _httpClient;
+        // Codigo agregar para consumir la Web API
+        private readonly HttpClient httpClient;
         public UsuarioController(HttpClient client)
         {
-            _httpClient = client;
+            httpClient = client;
         }
-
-
+        private async Task<Usuario> ObtenerUsuarioPorIdAsync(Usuario pUsuario)
+        {
+            Usuario usuario = new Usuario();
+            var response = await httpClient.GetAsync("Usuario/" + pUsuario.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return usuario;
+        }
+        private async Task<Rol> ObtenerRolPorIdAsync(Rol pRol)
+        {
+            Rol rol = new Rol();
+            var response = await httpClient.GetAsync("Rol/" + pRol.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                rol = JsonSerializer.Deserialize<Rol>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return rol;
+        }
+        private async Task<List<Rol>> ObtenerRolesAsync()
+        {
+            List<Rol> roles = new List<Rol>();
+            var response = await httpClient.GetAsync("Rol");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                roles = JsonSerializer.Deserialize<List<Rol>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return roles;
+        }
+        //****************************************
         // GET: UsuarioController
         public async Task<IActionResult> Index(Usuario pUsuario = null)
         {
@@ -41,78 +75,42 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 pUsuario.Top_Aux = 10;
             else if (pUsuario.Top_Aux == -1)
                 pUsuario.Top_Aux = 0;
-
+            // Codigo agregar para consumir la Web API
             var usuarios = new List<Usuario>();
-            var roles = new List<Rol>();
-
-            var response = await _httpClient.PostAsJsonAsync("Usuario/Buscar", pUsuario);
+            var taskObtenerTodosRoles = ObtenerRolesAsync();
+            var taskResponse = httpClient.PostAsJsonAsync("Usuario/Buscar", pUsuario);
+            var response = await taskResponse;
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
                 usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
-
-            var responseRol = await _httpClient.GetAsync("Rol");
-            if (responseRol.IsSuccessStatusCode)
-            {
-                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            //var taskBuscar = usuarioBL.BuscarIncluirRolesAsync(pUsuario);
-            //var taskObtenerTodosRoles = rolBL.ObtenerTodosAsync();
-            //var usuarios = await taskBuscar;
+            // ********************************************
             ViewBag.Top = pUsuario.Top_Aux;
-            ViewBag.Roles = roles;
+            ViewBag.Roles = await taskObtenerTodosRoles;
             return View(usuarios);
         }
-
 
         // GET: UsuarioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            Usuario usuario = new Usuario();
-            var response = await _httpClient.GetAsync("Usuario/" + id);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            Rol rol = new Rol();
-            var idRol = usuario.IdRol;
-            var responseRol = await _httpClient.GetAsync("Rol/" + idRol);
-            if (responseRol.IsSuccessStatusCode)
-            {
-                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                rol = JsonSerializer.Deserialize<Rol>(responseBodyRol,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            usuario.Rol = rol;
+            // Codigo agregar para consumir la Web API
+            Usuario usuario = await ObtenerUsuarioPorIdAsync(new Usuario { Id = id });
+            usuario.Rol = await ObtenerRolPorIdAsync(new Rol { Id = usuario.IdRol });
+            //*******************************************************           
             return View(usuario);
         }
-
 
         // GET: UsuarioController/Create
         public async Task<IActionResult> Create()
         {
-            var roles = new List<Rol>();
-            var response = await _httpClient.GetAsync("Rol");
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                roles = JsonSerializer.Deserialize<List<Rol>>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-            ViewBag.Roles = roles;
+            // Codigo agregar para consumir la Web API
+            ViewBag.Roles = await ObtenerRolesAsync();
+            //*****************************************
             ViewBag.Error = "";
             return View();
         }
-
 
         // POST: UsuarioController/Create
         [HttpPost]
@@ -121,7 +119,8 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                var response = await _httpClient.PostAsJsonAsync("Usuario", pUsuario);
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PostAsJsonAsync("Usuario", pUsuario);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -131,44 +130,30 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                     ViewBag.Error = "Sucedio un error al consumir la WEP API";
                     return View(pUsuario);
                 }
+                // ********************************************
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                //ViewBag.Roles = await rolBL.ObtenerTodosAsync();
+                // Codigo agregar para consumir la Web API
+                ViewBag.Roles = await ObtenerRolesAsync();
+                //*****************************************
                 return View(pUsuario);
             }
         }
 
-
         // GET: UsuarioController/Edit/5
         public async Task<IActionResult> Edit(Usuario pUsuario)
         {
-            var usuario = new Usuario();
-
-            var response = await _httpClient.GetAsync("Usuario/" + pUsuario.Id);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            var roles = new List<Rol>();
-            //Para cargar todos los roles.
-            var responseRol = await _httpClient.GetAsync("Rol");
-            if (responseRol.IsSuccessStatusCode)
-            {
-                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            ViewBag.Roles = roles;
+            // Codigo agregar para consumir la Web API
+            var taskObtenerTodosRoles = ObtenerRolesAsync();
+            var taskObtenerPorId = ObtenerUsuarioPorIdAsync(pUsuario);
+            // ***********************************************
+            var usuario = await taskObtenerPorId;
+            ViewBag.Roles = await taskObtenerTodosRoles;
             ViewBag.Error = "";
             return View(usuario);
         }
-
 
         // POST: UsuarioController/Edit/5
         [HttpPost]
@@ -177,76 +162,39 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                var response = await _httpClient.PutAsJsonAsync("Usuario/" + id, pUsuario);
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PutAsJsonAsync("Usuario/" + id, pUsuario);
                 if (response.IsSuccessStatusCode)
                 {
-
                     return RedirectToAction(nameof(Index));
                 }
                 else
                 {
-                    var roles = new List<Rol>();
-                    //Para cargar todos los roles.
-                    var responseRol = await _httpClient.GetAsync("Rol");
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                        roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
-                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                    }
-
-                    ViewBag.Roles = roles;
                     ViewBag.Error = "Sucedio un error al consumir la WEP API";
                     return View(pUsuario);
                 }
-                // int result = await rolBL.ModificarAsync(pRol);
-
+                // ************************************************
             }
             catch (Exception ex)
             {
-                var roles = new List<Rol>();
-                //Para cargar todos los roles.
-                var responseRol = await _httpClient.GetAsync("Rol");
-                if (responseRol.IsSuccessStatusCode)
-                {
-                    var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                    roles = JsonSerializer.Deserialize<List<Rol>>(responseBodyRol,
-                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-                }
-
-                ViewBag.Roles = roles;
                 ViewBag.Error = ex.Message;
+                // Codigo agregar para consumir la Web API
+                ViewBag.Roles = await ObtenerRolesAsync();
+                //*****************************************
                 return View(pUsuario);
             }
         }
 
-
         // GET: UsuarioController/Delete/5
         public async Task<IActionResult> Delete(Usuario pUsuario)
         {
-            Usuario usuario = new Usuario();
-            var response = await _httpClient.GetAsync("Usuario/" + pUsuario.Id);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseBody = await response.Content.ReadAsStringAsync();
-                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            Rol rol = new Rol();
-            var idRol = usuario.IdRol;
-            var responseRol = await _httpClient.GetAsync("Rol/" + idRol);
-            if (responseRol.IsSuccessStatusCode)
-            {
-                var responseBodyRol = await responseRol.Content.ReadAsStringAsync();
-                rol = JsonSerializer.Deserialize<Rol>(responseBodyRol,
-                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
-            }
-
-            usuario.Rol = rol;
+            // Codigo agregar para consumir la Web API
+            Usuario usuario = await ObtenerUsuarioPorIdAsync(new Usuario { Id = pUsuario.Id });
+            usuario.Rol = await ObtenerRolPorIdAsync(new Rol { Id = usuario.IdRol });
+            //*******************************************************    
+            ViewBag.Error = "";
             return View(usuario);
         }
-
 
         // POST: UsuarioController/Delete/5
         [HttpPost]
@@ -255,7 +203,8 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                var response = await _httpClient.DeleteAsync("Usuario/" + id);
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.DeleteAsync("Usuario/" + id);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -265,19 +214,18 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                     ViewBag.Error = "Sucedio un error al consumir la WEP API";
                     return View(pUsuario);
                 }
+                // **********************************************
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                //var usuario = await usuarioBL.ObtenerPorIdAsync(pUsuario);
-                //if (usuario == null)
-                //    usuario = new Usuario();
-                //if (usuario.Id > 0)
-                //    usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
-                return View(pUsuario);
+                // Codigo agregar para consumir la Web API
+                Usuario usuario = await ObtenerUsuarioPorIdAsync(new Usuario { Id = pUsuario.Id });
+                usuario.Rol = await ObtenerRolPorIdAsync(new Rol { Id = usuario.IdRol });
+                // ***************************************               
+                return View(usuario);
             }
         }
-
         // GET: UsuarioController/Create
         [AllowAnonymous]
         public async Task<IActionResult> Login(string ReturnUrl = null)
@@ -296,10 +244,21 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                var usuario = await usuarioBL.LoginAsync(pUsuario);
+                // Codigo agregar para consumir la Web API
+                Usuario usuario = new Usuario();
+                var response = await httpClient.PostAsJsonAsync("Usuario/Login", pUsuario);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+                // ******************************************************************
                 if (usuario != null && usuario.Id > 0 && pUsuario.Login == usuario.Login)
                 {
-                    usuario.Rol = await rolBL.ObtenerPorIdAsync(new Rol { Id = usuario.IdRol });
+                    // Codigo agregar para consumir la Web API
+                    usuario.Rol = await ObtenerRolPorIdAsync(new Rol { Id = usuario.IdRol });
+                    //***********************************************************
                     var claims = new[] { new Claim(ClaimTypes.Name, usuario.Login), new Claim(ClaimTypes.Role, usuario.Rol.Nombre) };
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
@@ -327,8 +286,16 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         // GET: UsuarioController/Create
         public async Task<IActionResult> CambiarPassword()
         {
-
-            var usuarios = await usuarioBL.BuscarAsync(new Usuario { Login = User.Identity.Name, Top_Aux = 1 });
+            // Codigo agregar para consumir la Web API            
+            var usuarios = new List<Usuario>();
+            var response = await httpClient.PostAsJsonAsync("Usuario/Buscar", new Usuario { Login = User.Identity.Name, Top_Aux = 1 }); ;
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            // ********************************************
             var usuarioActual = usuarios.FirstOrDefault();
             ViewBag.Error = "";
             return View(usuarioActual);
@@ -341,14 +308,44 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
-                int result = await usuarioBL.CambiarPasswordAsync(pUsuario, pPasswordAnt);
-                await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-                return RedirectToAction("Login", "Usuario");
+                // **********************************************************
+                // Codigo agregar para consumir la Web API
+                pUsuario.ConfirmarPassword_aux = pPasswordAnt;
+                var response = await httpClient.PostAsJsonAsync("Usuario/CambiarPassword", pUsuario);
+                if (response.IsSuccessStatusCode)
+                {
+                    await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+                    return RedirectToAction("Login", "Usuario");
+                }
+                else
+                {
+                    var usuarios = new List<Usuario>();
+                    var responseBuscar = await httpClient.PostAsJsonAsync("Usuario/Buscar", new Usuario { Login = User.Identity.Name, Top_Aux = 1 });
+                    if (responseBuscar.IsSuccessStatusCode)
+                    {
+                        var responseBody = await responseBuscar.Content.ReadAsStringAsync();
+                        usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
+                            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                    }
+                    var usuarioActual = usuarios.FirstOrDefault();
+                    return View(usuarioActual);
+                }
+                //************************************************************************
+
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                var usuarios = await usuarioBL.BuscarAsync(new Usuario { Login = User.Identity.Name, Top_Aux = 1 });
+                // Codigo agregar para consumir la Web API            
+                var usuarios = new List<Usuario>();
+                var response = await httpClient.PostAsJsonAsync("Usuario/Buscar", new Usuario { Login = User.Identity.Name, Top_Aux = 1 }); ;
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseBody = await response.Content.ReadAsStringAsync();
+                    usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
+                        new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+                }
+                // ********************************************
                 var usuarioActual = usuarios.FirstOrDefault();
                 return View(usuarioActual);
             }
