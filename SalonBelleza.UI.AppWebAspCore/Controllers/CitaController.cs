@@ -1,25 +1,176 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SalonBelleza.EntidadesDeNegocio;
-using SalonBelleza.LogicaDeNegocio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+/********************************/
+using SalonBelleza.EntidadesDeNegocio;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Security.Claims;
+
+// Libreria necesarias para consumir la Web API
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+//**********************************************
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class CitaController : Controller
     {
-        CitaBL citaBL = new CitaBL();
-        ClienteBL clienteBL = new ClienteBL();
-        UsuarioBL usuarioBL = new UsuarioBL();
-        ServicioBL servicioBL = new ServicioBL();
-        DetalleCitaBL detalleCitaBL = new DetalleCitaBL();
-        // GET: CitaController
+        // Codigo agregar para consumir la Web API
+        private readonly HttpClient httpClient;
+        public CitaController(HttpClient client)
+        {
+            httpClient = client;
+        }
+        private async Task<Cita> ObtenerCitaPorIdAsync(Cita pCita)
+        {
+            Cita cita = new Cita();
+            var response = await httpClient.GetAsync("Cita/" + pCita.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                cita = JsonSerializer.Deserialize<Cita>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return cita;
+        }
+
+
+        private async Task<Cliente> ObtenerClientePorIdAsync(Cliente pCliente)
+        {
+            Cliente cliente = new Cliente();
+            var response = await httpClient.GetAsync("Cliente/" + pCliente.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                cliente = JsonSerializer.Deserialize<Cliente>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return cliente;
+        }
+        private async Task<List<Cliente>> ObtenerClientesAsync()
+        {
+            List<Cliente> clientes = new List<Cliente>();
+            var response = await httpClient.GetAsync("Cliente");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                clientes = JsonSerializer.Deserialize<List<Cliente>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return clientes;
+        }
+
+
+
+
+
+
+
+        private async Task<Servicio> ObtenerServicioPorIdAsync(Servicio pServicio)
+        {
+            Servicio servicio = new Servicio();
+            var response = await httpClient.GetAsync("Servicio/" + pServicio.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                servicio = JsonSerializer.Deserialize<Servicio>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return servicio;
+        }
+        private async Task<List<Servicio>> ObtenerServiciosAsync()
+        {
+            List<Servicio> servicios = new List<Servicio>();
+            var response = await httpClient.GetAsync("Servicio");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                servicios = JsonSerializer.Deserialize<List<Servicio>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return servicios;
+        }
+
+
+
+
+
+
+
+
+
+        private async Task<Usuario> ObtenerUsuarioPorIdAsync(Usuario pUsuario)
+        {
+            Usuario usuario = new Usuario();
+            var response = await httpClient.GetAsync("Usuario/" + pUsuario.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuario = JsonSerializer.Deserialize<Usuario>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return usuario;
+        }
+        private async Task<List<Usuario>> ObtenerUsuariosAsync()
+        {
+            List<Usuario> usuarios = new List<Usuario>();
+            var response = await httpClient.GetAsync("Usuario");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                usuarios = JsonSerializer.Deserialize<List<Usuario>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return usuarios;
+        }
+
+
+
+
+
+
+
+
+        private async Task<DetalleCita> ObtenerDetalleCitaPorIdAsync(DetalleCita pDetalleCita)
+        {
+            DetalleCita detallecita = new DetalleCita();
+            var response = await httpClient.GetAsync("DetalleCita/" + pDetalleCita.Id);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                detallecita = JsonSerializer.Deserialize<DetalleCita>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return detallecita;
+        }
+        private async Task<List<DetalleCita>> ObtenerDetalleCitasAsync()
+        {
+            List<DetalleCita> detallecitas = new List<DetalleCita>();
+            var response = await httpClient.GetAsync("DetalleCita");
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                detallecitas = JsonSerializer.Deserialize<List<DetalleCita>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            return detallecitas;
+        }
+
+
+
+
+
+
+
+        // GET: UsuarioController
         public async Task<IActionResult> Index(Cita pCita = null)
         {
             if (pCita == null)
@@ -28,68 +179,93 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 pCita.Top_Aux = 10;
             else if (pCita.Top_Aux == -1)
                 pCita.Top_Aux = 0;
-            var taskBuscarCliente = citaBL.BuscarIncluirClienteAsync(pCita);
-            var taskObtenerTodosClientes = clienteBL.ObtenerTodosAsync();
-            var taskBuscarUsuario = citaBL.BuscarIncluirUsuarioAsync(pCita);
-            var taskObtenerTodosUsuarios = usuarioBL.ObtenerTodosAsync();
-            var taskBuscarUsuarioCliente = citaBL.BuscarIncluirUsuarioClienteAsync(pCita);
-            var citas = await taskBuscarUsuarioCliente;
+            // Codigo agregar para consumir la Web API
+            var citas = new List<Cita>();
+            var taskObtenerTodosClientes = ObtenerClientesAsync();
+            var taskObtenerTodosUsuarios = ObtenerUsuariosAsync();
+            var taskResponse = httpClient.PostAsJsonAsync("Cita/Buscar", pCita);
+            var response = await taskResponse;
+            if (response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                citas = JsonSerializer.Deserialize<List<Cita>>(responseBody,
+                    new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            }
+            // ********************************************
             ViewBag.Top = pCita.Top_Aux;
             ViewBag.Clientes = await taskObtenerTodosClientes;
             ViewBag.Usuarios = await taskObtenerTodosUsuarios;
             return View(citas);
         }
 
-        // GET: CitaController/Details/5
+        // GET: UsuarioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
-            var cita = await citaBL.ObtenerPorIdAsync(new Cita { Id = id });
-            var taskCliente = clienteBL.ObtenerPorIdAsync(new Cliente { Id = cita.IdCliente });
-            var taskUsuario= usuarioBL.ObtenerPorIdAsync(new Usuario { Id = cita.IdUsuario });
-            var taskDetalles = detalleCitaBL.BuscarIncluirServicioAsync(new DetalleCita { IdCita = cita.Id });
-            cita.Cliente = await taskCliente;
-            cita.Usuario = await taskUsuario;
-            cita.DetalleCita = await taskDetalles;
+            // Codigo agregar para consumir la Web API
+            Cita cita = await ObtenerCitaPorIdAsync(new Cita { Id = id });
+            cita.Cliente = await ObtenerClientePorIdAsync(new Cliente { Id = cita.IdCliente });
+            cita.Usuario = await ObtenerUsuarioPorIdAsync(new Usuario { Id = cita.IdUsuario });
+            //    cita.DetalleCita = await ObtenerDetalleCitaPorIdAsync(new DetalleCita { Id = cita.IdDetalleCita});
+            //*******************************************************           
             return View(cita);
         }
 
-        // GET: CitaController/Create
+        //UsuarioController/Create
         public async Task<IActionResult> Create()
         {
-            ViewBag.Clientes = await clienteBL.ObtenerTodosAsync();
-            ViewBag.Usuarios = await usuarioBL.ObtenerTodosAsync();
-            ViewBag.servicios = await servicioBL.ObtenerTodosAsync();
+            // Codigo agregar para consumir la Web API
+            var taskObtenerTodosClientes = ObtenerClientesAsync();
+            var taskObtenerTodosUsuarios = ObtenerUsuariosAsync();
+            var taskObtenerTodosServicios = ObtenerServiciosAsync();
+
+
+            ViewBag.Servicios = await taskObtenerTodosServicios;
+            ViewBag.Clientes = await taskObtenerTodosClientes;
+            ViewBag.Usuarios = await taskObtenerTodosUsuarios;
+            //*****************************************
             ViewBag.Error = "";
             return View();
         }
 
-        // POST: CitaController/Create
+        // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Cita pCita)
         {
             try
             {
-               // int result = 0;
-                int result = await citaBL.CrearAsync(pCita);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PostAsJsonAsync("Cita", pCita);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pCita);
+                }
+                // ********************************************
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                ViewBag.Clientes = await clienteBL.ObtenerTodosAsync();
-                ViewBag.Usuarios = await usuarioBL.ObtenerTodosAsync();
-                ViewBag.servicios = await servicioBL.ObtenerTodosAsync();
-                return View(pCita); //si ocurrio un error se redirecciona a la vista create con el parametro
+                // Codigo agregar para consumir la Web API
+                ViewBag.Clientes = await ObtenerClientesAsync();
+                ViewBag.Servicios = await ObtenerServiciosAsync();
+                //*****************************************
+                return View(pCita);
             }
         }
 
-        // GET: CitaController/Edit/5
+        // GET: UsuarioController/Edit/5
         public async Task<IActionResult> Edit(Cita pCita)
         {
-            var taskObtenerPorId = citaBL.ObtenerPorIdAsync(pCita);
-            var taskObtenerTodosClientes = clienteBL.ObtenerTodosAsync();
-            var taskObtenerTodosUsuarios = usuarioBL.ObtenerTodosAsync();
+            // Codigo agregar para consumir la Web API
+            var taskObtenerTodosClientes = ObtenerClientesAsync();
+            var taskObtenerPorId = ObtenerCitaPorIdAsync(pCita);
+            var taskObtenerTodosUsuarios = ObtenerUsuariosAsync();
+            // ***********************************************
             var cita = await taskObtenerPorId;
             ViewBag.Clientes = await taskObtenerTodosClientes;
             ViewBag.Usuarios = await taskObtenerTodosUsuarios;
@@ -97,63 +273,78 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(cita);
         }
 
-        // POST: CitaController/Edit/5
+        // POST: UsuarioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Cita pCita)
         {
             try
             {
-                int result = await citaBL.ModificarAsync(pCita);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.PutAsJsonAsync("Cita/" + id, pCita);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pCita);
+                }
+                // ************************************************
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                ViewBag.Clientes = await clienteBL.ObtenerTodosAsync();
-                ViewBag.Usuarios = await usuarioBL.ObtenerTodosAsync();
+                // Codigo agregar para consumir la Web API
+                ViewBag.Clientes = await ObtenerClientesAsync();
+                ViewBag.Servicios = await ObtenerServiciosAsync();
+                ViewBag.Usuarios = await ObtenerUsuariosAsync();
+                //*****************************************
                 return View(pCita);
             }
         }
 
-        // GET: CitaController/Delete/5
+        // GET: UsuarioController/Delete/5
         public async Task<IActionResult> Delete(Cita pCita)
         {
+            // Codigo agregar para consumir la Web API
+            Cita cita = await ObtenerCitaPorIdAsync(new Cita { Id = pCita.Id });
+            cita.Cliente = await ObtenerClientePorIdAsync(new Cliente { Id = cita.IdCliente });
+            //*******************************************************    
             ViewBag.Error = "";
-            var cita = await citaBL.ObtenerPorIdAsync(pCita);
-            cita.Cliente = await clienteBL.ObtenerPorIdAsync(new Cliente { Id = cita.IdCliente });
-            cita.Usuario = await usuarioBL.ObtenerPorIdAsync(new Usuario { Id = cita.IdUsuario });
             return View(cita);
         }
 
-        // POST: CitaController/Delete/5
+        // POST: UsuarioController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id, Cita pCita)
         {
             try
             {
-                int result = await citaBL.EliminarAsync(pCita);
-                return RedirectToAction(nameof(Index));
+                // Codigo agregar para consumir la Web API
+                var response = await httpClient.DeleteAsync("Cita/" + id);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ViewBag.Error = "Sucedio un error al consumir la WEP API";
+                    return View(pCita);
+                }
+                // **********************************************
             }
             catch (Exception ex)
             {
                 ViewBag.Error = ex.Message;
-                var cita = await citaBL.ObtenerPorIdAsync(pCita);
-                if (cita == null)
-                    cita = new Cita();
-                if (cita.Id > 0)
-                {
-                    cita.Cliente = await clienteBL.ObtenerPorIdAsync(new Cliente { Id = cita.IdCliente });
-                    cita.Usuario = await usuarioBL.ObtenerPorIdAsync(new Usuario { Id = cita.IdUsuario });
-                }
-                return View(pCita);
+                // Codigo agregar para consumir la Web API
+                Cita cita = await ObtenerCitaPorIdAsync(new Cita { Id = pCita.Id });
+                cita.Cliente = await ObtenerClientePorIdAsync(new Cliente { Id = cita.IdCliente });
+                // ***************************************               
+                return View(cita);
             }
-        }
-
-        public IActionResult ManejarTablas()
-        {
-            return View();
         }
     }
 }
