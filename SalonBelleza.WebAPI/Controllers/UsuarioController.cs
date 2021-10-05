@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 //Agregue las siguientes referencias al controlador 
+using SalonBelleza.WebAPI.Auth;
+using Microsoft.AspNetCore.Authorization;
 using SalonBelleza.LogicaDeNegocio;
 using SalonBelleza.EntidadesDeNegocio;
 using System.Text.Json;//Libreria para seliarizar en el metodo Buscar
@@ -14,9 +16,17 @@ namespace SalonBelleza.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] //Agregar el siguiente metadato para autorizar JWT la Web API
     public class UsuarioController : ControllerBase
     {
         private UsuarioBL usuarioBL = new UsuarioBL();
+        // Codigo para agregar la seguridad JWT
+        private readonly IJwtAuthenticationService authService;
+        public UsuarioController(IJwtAuthenticationService pAuthService)
+        {
+            authService = pAuthService;
+        }
+        //************************************************
         // GET: api/<UsuarioController>
         [HttpGet]
         public async Task<IEnumerable<Usuario>> Get()
