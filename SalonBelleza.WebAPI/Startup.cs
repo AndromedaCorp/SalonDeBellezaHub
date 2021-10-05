@@ -107,9 +107,9 @@ namespace SalonBelleza.WebAPI
 
             app.UseRouting();
 
+            app.UseAuthentication(); //Agregar para auntenticarse en la Web API
             app.UseAuthorization();
-            app.UseAuthentication(); //Agregar para auntenticarse en la Web API  
-               
+                    
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

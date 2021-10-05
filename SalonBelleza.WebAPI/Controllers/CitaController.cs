@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using SalonBelleza.LogicaDeNegocio;
 using SalonBelleza.EntidadesDeNegocio;
 using System.Text.Json;//Libreria para seliarizar en el metodo Buscar
+//Agregar la siguiente libreria para la seguridad JWT 
+using Microsoft.AspNetCore.Authorization;
+
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,6 +17,7 @@ namespace SalonBelleza.WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CitaController : ControllerBase
     {
         //Creando objeto de tipo privado e instanciandolo
