@@ -36,7 +36,7 @@ namespace SalonBelleza.WebAPI.Auth
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature) //El token tendra el algoritmo HmacSha256
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
-            throw new NotImplementedException();
+            return tokenHandler.WriteToken(token);
         }
     }
 }
