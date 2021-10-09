@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 /********************************/
 using SalonBelleza.EntidadesDeNegocio;
-using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+
+// Libreria necesarias para consumir la Web API
 using System.Net.Http;
-using System.Text.Json;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Security.Claims; // seguridad por token
+using System.Net.Http.Headers; // seguridad por token
+//**********************************************
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
@@ -37,10 +39,20 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
             return rol;
         }
+        private void RefrescarToken()
+        {
+            var claimExpired = User.FindFirst(ClaimTypes.Expired);
+            if (claimExpired != null)
+            {
+                var token = claimExpired.Value;
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
+        }
         //***************************************
         // GET: RolController
         public async Task<IActionResult> Index(Rol pRol = null)
         {
+            RefrescarToken();
             if (pRol == null)
                 pRol = new Rol();
             if (pRol.Top_Aux == 0)
@@ -50,6 +62,8 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             // Codigo agregar para consumir la Web API
             var roles = new List<Rol>();
             var response = await httpClient.PostAsJsonAsync("Rol/Buscar", pRol);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                return RedirectToAction("Usuario", "Login");
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -65,6 +79,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Rol rol = await ObtenerRolPorIdAsync(new Rol { Id = id });
             //*******************************************************
             return View(rol);
@@ -85,7 +100,10 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 // Codigo agregar para consumir la Web API
+                RefrescarToken();
                 var response = await httpClient.PostAsJsonAsync("Rol", pRol);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -108,6 +126,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Edit(Rol pRol)
         {
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Rol rol = await ObtenerRolPorIdAsync(pRol);
             // ***********************************************
             ViewBag.Error = "";
@@ -122,7 +141,10 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 // Codigo agregar para consumir la Web API
+                RefrescarToken();
                 var response = await httpClient.PutAsJsonAsync("Rol/" + id, pRol);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -146,6 +168,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             ViewBag.Error = "";
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Rol rol = await ObtenerRolPorIdAsync(pRol);
             // ************************************************
             return View(rol);
@@ -159,7 +182,10 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 // Codigo agregar para consumir la Web API
+                RefrescarToken();
                 var response = await httpClient.DeleteAsync("Rol/" + id);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
