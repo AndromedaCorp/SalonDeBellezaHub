@@ -20,7 +20,7 @@ using System.Net.Http.Headers;
 
 //**********************************************
 
-namespace Sa.UI.AppWebAspCore.Controllers
+namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class UsuarioController : Controller

@@ -1,18 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 /********************************/
 using SalonBelleza.EntidadesDeNegocio;
-using SalonBelleza.LogicaDeNegocio;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+
+// Libreria necesarias para consumir la Web API
 using System.Net.Http;
-using System.Text.Json;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Security.Claims; // seguridad por token
+using System.Net.Http.Headers; // seguridad por token
+//**********************************************
 
 namespace SalonBelleza.UI.AppWebAspCore.Controllers
 {
@@ -36,11 +38,25 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
             return servicio;
+
+
+
+        }
+
+        private void RefrescarToken()
+        {
+            var claimExpired = User.FindFirst(ClaimTypes.Expired);
+            if (claimExpired != null)
+            {
+                var token = claimExpired.Value;
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            }
         }
         //***************************************
         // GET: ServicioController
         public async Task<IActionResult> Index(Servicio pServicio = null)
         {
+            RefrescarToken();
             if (pServicio == null)
                 pServicio = new Servicio();
             if (pServicio.Top_Aux == 0)
@@ -50,6 +66,8 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             // Codigo agregar para consumir la Web API
             var servicios = new List<Servicio>();
             var response = await httpClient.PostAsJsonAsync("Servicio/Buscar", pServicio);
+            if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                return RedirectToAction("Usuario", "Login");
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
@@ -65,6 +83,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         public async Task<IActionResult> Details(int id)
         {
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Servicio servicio = await ObtenerServicioPorIdAsync(new Servicio { Id = id });
             //*******************************************************
             return View(servicio);
@@ -84,8 +103,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
+                RefrescarToken();
                 // Codigo agregar para consumir la Web API
                 var response = await httpClient.PostAsJsonAsync("Servicio", pServicio);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -104,10 +126,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
-        // GET: ServicioController/Edit/5
+        // GET: RolController/Edit/5
         public async Task<IActionResult> Edit(Servicio pServicio)
         {
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Servicio servicio = await ObtenerServicioPorIdAsync(pServicio);
             // ***********************************************
             ViewBag.Error = "";
@@ -122,7 +145,10 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             try
             {
                 // Codigo agregar para consumir la Web API
+                RefrescarToken();
                 var response = await httpClient.PutAsJsonAsync("Servicio/" + id, pServicio);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
@@ -146,6 +172,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             ViewBag.Error = "";
             // Codigo agregar para consumir la Web API
+            RefrescarToken();
             Servicio servicio = await ObtenerServicioPorIdAsync(pServicio);
             // ************************************************
             return View(servicio);
@@ -158,8 +185,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             try
             {
+                RefrescarToken();
                 // Codigo agregar para consumir la Web API
                 var response = await httpClient.DeleteAsync("Servicio/" + id);
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    return RedirectToAction("Usuario", "Login");
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction(nameof(Index));
