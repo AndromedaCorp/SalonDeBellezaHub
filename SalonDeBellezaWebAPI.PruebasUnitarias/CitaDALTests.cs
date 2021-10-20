@@ -5,16 +5,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+// *************************************************************
+using SalonBelleza.EntidadesDeNegocio;
 namespace SalonBelleza.AccesoADatos.Tests
 {
     [TestClass()]
     public class CitaDALTests
     {
         [TestMethod()]
-        public void CrearAsyncTest()
+        public async Task CrearAsyncTest()
         {
-            Assert.Fail();
+            Cita cita = new Cita(); //Creamos una instancia de Rol en la cual le agregaremos parametros. 
+            cita.IdUsuario = 1;
+            cita.IdCliente = 1;
+            cita.Total = 2;
+            cita.Estado = 0;
+            cita.FechaCita = DateTime.Now;
+            
+            int result = await CitaDAL.CrearAsync(cita);
+            Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
@@ -36,9 +45,10 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void ObtenerTodosAsyncTest()
+        public async Task ObtenerTodosAsyncTest()
         {
-            Assert.Fail();
+            List<Cita> citas = await CitaDAL.ObtenerTodosAsync();
+            Assert.IsFalse(citas.Count == 0);
         }
 
         [TestMethod()]

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SalonBelleza.AccesoADatos\SalonBelleza.AccesoADatos.csproj" />
+    <ProjectReference Include="..\SalonBelleza.EntidadesDeNegocio\SalonBelleza.EntidadesDeNegocio.csproj" />
   </ItemGroup>
 
 </Project>
