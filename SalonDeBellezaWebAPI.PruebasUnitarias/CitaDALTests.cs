@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 // *************************************************************
 using SalonBelleza.EntidadesDeNegocio;
+
 namespace SalonBelleza.AccesoADatos.Tests
 {
     [TestClass()]
@@ -27,9 +28,18 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void ModificarAsyncTest()
+        public async Task ModificarAsyncTest()
         {
-            Assert.Fail();
+            Cita cita = new Cita(); //Creamos una instancia de Rol en la cual le agregaremos parametros.
+            cita.Id = 46;
+            cita.IdUsuario = 1;
+            cita.IdCliente = 2;
+            cita.Total = 2;
+            cita.Estado = 0;
+            cita.FechaCita = DateTime.Now;
+
+            int result = await CitaDAL.ModificarAsync(cita);
+            Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
@@ -39,9 +49,14 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void ObtenerPorIdAsyncTest()
+        public async Task ObtenerPorIdAsyncTest()
         {
-            Assert.Fail();
+            Cita cita = new Cita();
+            cita.Id = 46;
+
+            Cita result;
+            result = await CitaDAL.ObtenerPorIdAsync(cita);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod()]

@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+// ***************************************************
+using SalonBelleza.EntidadesDeNegocio;
 
 namespace SalonBelleza.AccesoADatos.Tests
 {
@@ -12,9 +14,16 @@ namespace SalonBelleza.AccesoADatos.Tests
     public class DetalleCitaDALTests
     {
         [TestMethod()]
-        public void CrearAsyncTest()
+        public async Task CrearAsyncTest()
         {
-            Assert.Fail();
+            DetalleCita detalle = new DetalleCita();
+            detalle.IdCita = 27;
+            detalle.IdServicio = 10;
+            detalle.Precio = 2;
+            detalle.Duracion = 4.5;
+
+            int result = await DetalleCitaDAL.CrearAsync(detalle);
+            Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
