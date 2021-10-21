@@ -23,8 +23,8 @@ namespace SalonBelleza.AccesoADatos.Tests
             cita.Estado = 0;
             cita.FechaCita = DateTime.Now;
             
-            int result = await CitaDAL.CrearAsync(cita);
-            Assert.IsFalse(result == 0);
+            //int result = await CitaDAL.CrearAsync(cita);
+            //Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
@@ -43,9 +43,13 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void EliminarAsyncTest()
+        public async Task EliminarAsyncTest()
         {
-            Assert.Fail();
+            Cita cita = new Cita();
+            cita.Id = 32;
+
+            int result = await CitaDAL.EliminarAsync(cita);
+            Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
