@@ -30,6 +30,7 @@ namespace SalonBelleza.AccesoADatos.Tests
         public async Task ModificarAsyncTest()
         {
             DetalleCita detalle = new DetalleCita();
+            //Agregamos el Id mas los parametros a modificar, no puede ir ninguno vacio. 
             detalle.Id = 22;
             detalle.IdCita = 27;
             detalle.IdServicio = 4;
@@ -37,14 +38,14 @@ namespace SalonBelleza.AccesoADatos.Tests
             detalle.Duracion = 4.5;
 
             int result = await DetalleCitaDAL.ModificarAsync(detalle);
-            Assert.IsFalse(result == 0);
+            Assert.IsFalse(result == 0); //Si es falso el resultado, marcara un error.
         }
 
         [TestMethod()]
         public async Task EliminarAsyncTest()
         {
             DetalleCita detalle = new DetalleCita();
-            detalle.Id = 24;
+            detalle.Id = 24; //Obtenemos el Id del Detalle a borrar.
 
             int result = await DetalleCitaDAL.EliminarAsync(detalle);
             Assert.IsFalse(result == 0);
@@ -54,24 +55,31 @@ namespace SalonBelleza.AccesoADatos.Tests
         public async Task ObtenerPorIdAsyncTest()
         {
             DetalleCita detalle = new DetalleCita();
-            detalle.Id = 22;
+            detalle.Id = 22; //Declaramos el Id del Detalle a buscar 
 
             DetalleCita result;
-            result = await DetalleCitaDAL.ObtenerPorIdAsync(detalle);
-            Assert.IsNotNull(result);
+            result = await DetalleCitaDAL.ObtenerPorIdAsync(detalle); //Agregamos el Id al metodo Obtener, el resultado se lo agregamos a result.
+            Assert.IsNotNull(result); //Si el objeto es Null marcara una excepcion.
         }
 
         [TestMethod()]
         public async Task ObtenerTodosAsyncTest()
         {
-            List<DetalleCita> detalles = await DetalleCitaDAL.ObtenerTodosAsync();
+            List<DetalleCita> detalles = await DetalleCitaDAL.ObtenerTodosAsync(); //Se declara un List ya que se espera una lista de Detalles.
             Assert.IsFalse(detalles.Count == 0);
         }
 
         [TestMethod()]
-        public void BuscarAsyncTest()
+        public async Task BuscarAsyncTest()
         {
-            Assert.Fail();
+            DetalleCita detalle = new DetalleCita(); 
+            //Se agregan los parametros que se desean buscar.
+            detalle.Precio = 2;
+            detalle.Duracion = 4.5;
+
+            //Agregamos los parametros al metodo buscar, luego este llenara la Lista de Detalles con los resultados.
+            List<DetalleCita> detalles = await DetalleCitaDAL.BuscarAsync(detalle);
+            Assert.IsFalse(detalles.Count == 0);
         }
 
         [TestMethod()]

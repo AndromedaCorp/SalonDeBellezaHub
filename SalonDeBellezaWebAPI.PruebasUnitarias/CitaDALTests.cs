@@ -71,9 +71,15 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void BuscarAsyncTest()
+        public async Task BuscarAsyncTest()
         {
-            Assert.Fail();
+            Cita cita = new Cita();
+            //Agregamos los parametro para buscar.
+            cita.Estado = 0;
+
+            //Agregamos los parametros al metodo buscar, luego este llenara la Lista de Cita con los resultados.
+            List<Cita> citas = await CitaDAL.BuscarAsync(cita);
+            Assert.IsFalse(citas.Count == 0);
         }
 
         [TestMethod()]
