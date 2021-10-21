@@ -39,15 +39,21 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void ObtenerPorIdAsyncTest()
+        public async Task ObtenerPorIdAsyncTest()
         {
-            Assert.Fail();
+            DetalleCita detalle = new DetalleCita();
+            detalle.Id = 22;
+
+            DetalleCita result;
+            result = await DetalleCitaDAL.ObtenerPorIdAsync(detalle);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod()]
-        public void ObtenerTodosAsyncTest()
+        public async Task ObtenerTodosAsyncTest()
         {
-            Assert.Fail();
+            List<DetalleCita> detalles = await DetalleCitaDAL.ObtenerTodosAsync();
+            Assert.IsFalse(detalles.Count == 0);
         }
 
         [TestMethod()]
