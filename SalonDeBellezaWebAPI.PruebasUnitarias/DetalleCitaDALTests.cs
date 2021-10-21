@@ -47,15 +47,16 @@ namespace SalonBelleza.AccesoADatos.Tests
             DetalleCita detalle = new DetalleCita();
             detalle.Id = 24; //Obtenemos el Id del Detalle a borrar.
 
-            int result = await DetalleCitaDAL.EliminarAsync(detalle);
+            int result = await DetalleCitaDAL.EliminarAsync(detalle); //Le pasamos el objeto con el ID al metodo Eliminar.
             Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
         public async Task ObtenerPorIdAsyncTest()
         {
+            //Creamos un objeto de la clase, para luego Indicar el ID que se desea buscar.
             DetalleCita detalle = new DetalleCita();
-            detalle.Id = 22; //Declaramos el Id del Detalle a buscar 
+            detalle.Id = 22; 
 
             DetalleCita result;
             result = await DetalleCitaDAL.ObtenerPorIdAsync(detalle); //Agregamos el Id al metodo Obtener, el resultado se lo agregamos a result.
@@ -65,7 +66,8 @@ namespace SalonBelleza.AccesoADatos.Tests
         [TestMethod()]
         public async Task ObtenerTodosAsyncTest()
         {
-            List<DetalleCita> detalles = await DetalleCitaDAL.ObtenerTodosAsync(); //Se declara un List ya que se espera una lista de Detalles.
+            //Se declara un List ya que se espera una lista de Detalles.
+            List<DetalleCita> detalles = await DetalleCitaDAL.ObtenerTodosAsync();
             Assert.IsFalse(detalles.Count == 0);
         }
 
