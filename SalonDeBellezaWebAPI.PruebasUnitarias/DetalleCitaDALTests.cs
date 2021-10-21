@@ -22,20 +22,32 @@ namespace SalonBelleza.AccesoADatos.Tests
             detalle.Precio = 2;
             detalle.Duracion = 4.5;
 
-            int result = await DetalleCitaDAL.CrearAsync(detalle);
+            //int result = await DetalleCitaDAL.CrearAsync(detalle);
+            //Assert.IsFalse(result == 0);
+        }
+
+        [TestMethod()]
+        public async Task ModificarAsyncTest()
+        {
+            DetalleCita detalle = new DetalleCita();
+            detalle.Id = 22;
+            detalle.IdCita = 27;
+            detalle.IdServicio = 4;
+            detalle.Precio = 2;
+            detalle.Duracion = 4.5;
+
+            int result = await DetalleCitaDAL.ModificarAsync(detalle);
             Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
-        public void ModificarAsyncTest()
+        public async Task EliminarAsyncTest()
         {
-            Assert.Fail();
-        }
+            DetalleCita detalle = new DetalleCita();
+            detalle.Id = 24;
 
-        [TestMethod()]
-        public void EliminarAsyncTest()
-        {
-            Assert.Fail();
+            int result = await DetalleCitaDAL.EliminarAsync(detalle);
+            Assert.IsFalse(result == 0);
         }
 
         [TestMethod()]
