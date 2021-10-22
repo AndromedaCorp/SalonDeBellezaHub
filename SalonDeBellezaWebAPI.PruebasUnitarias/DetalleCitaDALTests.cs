@@ -85,21 +85,52 @@ namespace SalonBelleza.AccesoADatos.Tests
         }
 
         [TestMethod()]
-        public void BuscarIncluirServicioAsyncTest()
+        public async Task BuscarIncluirServicioAsyncTest()
         {
-            Assert.Fail();
+
+            DetalleCita detalle = new DetalleCita();
+            //Se agregan los parametros que se desean buscar.
+            detalle.Id= 2;
+            detalle.IdServicio = 1;
+
+            //Agregamos los parametros al metodo buscar, luego este llenara la Lista de Detalles con los resultados.
+            List<DetalleCita> detalles = await DetalleCitaDAL.BuscarIncluirServicioAsync(detalle);
+            Assert.IsFalse(detalles.Count == 0);
+
         }
 
         [TestMethod()]
-        public void CrearDetallesTest()
+        public async Task CrearDetallesTest()
         {
-            Assert.Fail();
+
+            DetalleCita detalle = new DetalleCita();
+            //Se agregan los parametros que se desean buscar.
+            detalle.Id = 2;
+          
+
+            //Agregamos los parametros al metodo buscar, luego este llenara la Lista de Detalles con los resultados.
+            List<DetalleCita> detalles = await DetalleCitaDAL.BuscarIncluirServicioAsync(detalle);
+            Assert.IsFalse(detalles.Count == 0);
+
+
         }
 
         [TestMethod()]
-        public void ActualizarDetallesTest()
+        public async Task ActualizarDetallesTest()
         {
-            Assert.Fail();
+
+
+            DetalleCita detalle = new DetalleCita();
+            //Se agregan los parametros que se desean buscar.
+            detalle.TipoAccion_Aux = 2;
+
+
+            //Agregamos los parametros al metodo buscar, luego este llenara la Lista de Detalles con los resultados.
+            List<DetalleCita> detalles = await DetalleCitaDAL.BuscarIncluirServicioAsync(detalle);
+            Assert.IsFalse(detalles.Count == 0);
+
+
+
         }
     }
 }
