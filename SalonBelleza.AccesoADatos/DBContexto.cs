@@ -52,7 +52,8 @@ namespace SalonBelleza.AccesoADatos
             //optionsBuilder.UseSqlServer(@"Data Source=DESKTOP-G0IU72C\SQLEXPRESS;Initial Catalog=SalonBelleza;Integrated Security=True;");
 
             //String de conexion a la base remota
-            optionsBuilder.UseSqlServer(@"Data Source=198.38.83.200;Initial Catalog=eliqsv_salonbelleza2;Persist Security Info=True;User ID=eliqsv_andromeda;Password=fszlq6vgdxuhecrmoaiw");
+            optionsBuilder.UseSqlServer(@"workstation id=SalonBellezadb.mssql.somee.com;packet size=4096;user id=AndromedaCorp_SQLLogin_1;pwd=c4sd8dn7h7;
+                                                data source=SalonBellezadb.mssql.somee.com;persist security info=False;initial catalog=SalonBellezadb");
 
         }
 
