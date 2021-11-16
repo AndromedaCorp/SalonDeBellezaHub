@@ -11,15 +11,16 @@
 <style>
 
     .btn {
-        width:15%;
+        width: 15%;
     }
+
     .botonestabla .btn {
         width: 150px;
     }
-
 </style>
 
-<h1>Buscar</h1>
+<h1>Buscar Rol</h1>
+
 <div class="row">
     <div class="col-md-12">
         <form asp-action="Index">
@@ -75,26 +76,26 @@
     <tbody>
         @foreach (var item in Model)
         {
-        <tr data-page="@numPage">
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            @if (User.IsInRole("ADMINISTRADOR"))
-            {
-                <td class="botonestabla">
-                    @Html.ActionLink("Modificar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+            <tr data-page="@numPage">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
-            }
-            <td class="botonestabla">
-                @Html.ActionLink("Ver", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-            </td>
-            @if (User.IsInRole("ADMINISTRADOR"))
-            {
+                @if (User.IsInRole("ADMINISTRADOR DEL SISTEMA"))
+                {
+                    <td class="botonestabla">
+                        @Html.ActionLink("Modificar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
+                    </td>
+                }
                 <td class="botonestabla">
-                    @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Ver", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                 </td>
-            }
-        </tr>
+                @if (User.IsInRole("ADMINISTRADOR DEL SISTEMA"))
+                {
+                    <td class="botonestabla">
+                        @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })
+                    </td>
+                }
+            </tr>
             numRegistros++;
             if (numRegistros == numRegistrosPorPage)
             {
