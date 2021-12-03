@@ -89,7 +89,7 @@
                 <td class="botonestabla">
                     @Html.ActionLink("Ver", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
                 </td>
-                @if (User.IsInRole("ADMINISTRADOR DEL SISTEMA"))
+                @if (User.IsInRole("ADMINISTRADOR"))
                 {
                     <td class="botonestabla">
                         @Html.ActionLink("Eliminar", "Delete", new { id = item.Id }, new { @class = "btn btn-danger" })

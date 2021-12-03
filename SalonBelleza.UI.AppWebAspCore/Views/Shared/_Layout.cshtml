@@ -11,13 +11,16 @@
     <style>
 
         body {
-            background: #7F7FD5;
-            background: -webkit-linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5);
-            background: linear-gradient(to left, #91EAE4, #86A8E7, #7F7FD5);
+            /* fallback for old browsers */
+            background: #6a11cb;
+            /* Chrome 10-25, Safari 5.1-6 */
+            background: -webkit-linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1));
+            /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+            background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
         }
 
         .container {
-            padding: 10px;
+            padding: 30px;
             background: #7F7FD5;
             background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
             background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
@@ -188,7 +191,7 @@
                 </nav>
             </header>
             <br>
-            <div class="container" style="background-color: #000000; border: 1px ridge #000000; border-radius: 15px 15px 15px 15px ">
+            <div class="container" style="background-color: #000000; border: 2px ridge #000000; border-radius: 25px 25px 25px 25px ">
                 <main role="main" class="pb-3">
                     @RenderBody()
                 </main>
