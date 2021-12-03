@@ -54,7 +54,7 @@
             <br>
             <div class="form-group">
                 <input type="submit" value="Buscar" class="btn btn-primary" />
-                @if (User.IsInRole("ADMINISTRADOR DEL SISTEMA"))
+                @if (User.IsInRole("ADMINISTRADOR"))
                 {
                     <a asp-action="Create" class="btn btn-primary">Crear</a>
                 }
@@ -80,7 +80,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Nombre)
                 </td>
-                @if (User.IsInRole("ADMINISTRADOR DEL SISTEMA"))
+                @if (User.IsInRole("ADMINISTRADOR"))
                 {
                     <td class="botonestabla">
                         @Html.ActionLink("Modificar", "Edit", new { id = item.Id }, new { @class = "btn btn-success" })
