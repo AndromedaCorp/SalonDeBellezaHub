@@ -7,8 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SalonBelleza.EntidadesDeNegocio
-{   
-   public class Servicio
+{
+    /// <summary>  
+    /// Esta clase es de la entidad Servicio, se detallara los atributos y los DataAnnotation.  
+    /// Esta clase contiene un Id que se usar como llave foranea por la Clase DetalleCita.
+    /// </summary> 
+    public class Servicio
     {
         // Prueba comentario :3
        [Key]

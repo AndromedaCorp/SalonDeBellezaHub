@@ -8,6 +8,12 @@ using System.Threading.Tasks;
 
 namespace SalonBelleza.EntidadesDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Cita, se detallara los atributos y los DataAnnotation.  
+    /// Esta clase contiene un Enum para detallar el Estado de la Cita.
+    /// Asi mismo esta clase contiene dos llaves foraneas las cuales son IdUsuario, IdCliente.
+    /// 
+    /// </summary> 
     public class Cita
     {
         [Key]

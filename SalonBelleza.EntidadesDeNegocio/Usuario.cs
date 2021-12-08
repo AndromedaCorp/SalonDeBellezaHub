@@ -10,7 +10,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalonBelleza.EntidadesDeNegocio
 {
-    //Esta clase es de la entidad Usuario, se detallara los atributos y los DataAnnotation.
+    /// <summary>  
+    /// Esta clase es de la entidad Usuario, se detallara los atributos y los DataAnnotation.  
+    /// Esta clase contiene un enum para especificar el Estado del Usuario.
+    /// Esta clase tiene una llave foranea llamada IdRol.
+    /// </summary>   
+    ///   
     public class Usuario
     {
         [Key]

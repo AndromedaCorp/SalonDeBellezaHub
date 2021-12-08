@@ -9,6 +9,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalonBelleza.EntidadesDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Rol, se detallara los atributos y los DataAnnotation.  
+    /// Esta clase contiene un Id que se usar como llave foranea por la Clase Usuario.
+    /// </summary> 
     public class Rol
     {
         [Key]

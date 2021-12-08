@@ -9,6 +9,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SalonBelleza.EntidadesDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Cliente, se detallara los atributos y los DataAnnotation.  
+    /// Esta clase contiene un Id que se usa como llave foranea por la Clase Cita.
+    /// </summary> 
     public class Cliente
     {
         [Key]
