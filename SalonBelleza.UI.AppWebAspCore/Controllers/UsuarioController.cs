@@ -107,6 +107,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
         //****************************************
 
+        /// <summary>  
+        /// Metodo para Obtener por Id un usuario haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <returns>Objeto tipo usuario con sus campos llenos</returns>  
+        /// 
         // GET: UsuarioController
         public async Task<IActionResult> Index(Usuario pUsuario = null)
         {
