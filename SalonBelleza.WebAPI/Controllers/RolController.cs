@@ -124,7 +124,7 @@ namespace SalonBelleza.WebAPI.Controllers
         /// <summary>  
         /// Metodo para Buscar un Rol segun los parametros enviados
         /// </summary>  
-        /// <param name="pRol">Se espera un objeto del Tipo Servicio</param> 
+        /// <param name="pRol">Se espera un objeto del Tipo Rol</param> 
         /// <returns>Retorna un objeto rol si encuentra coincidencias</returns>  
         ///
         [HttpPost("Buscar")]

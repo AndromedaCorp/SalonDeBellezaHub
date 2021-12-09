@@ -20,7 +20,11 @@ namespace SalonBelleza.WebAPI.Controllers
     public class ServicioController : ControllerBase
     {
         private ServicioBL servicioBL = new ServicioBL();
-
+        /// <summary>  
+        /// Metodo Get para obtener todos los Servicios
+        /// </summary>   
+        /// <returns>Retorna una Lista de Servicios</returns>  
+        ///
         // GET: api/<ServicioController>
         [HttpGet]
         public async Task<IEnumerable<Servicio>> Get() //Convertimos el metodo a Async, ya que en la logica de negocio el metodo es Async.
@@ -29,6 +33,13 @@ namespace SalonBelleza.WebAPI.Controllers
         }
 
         // GET api/<ServicioController>/5
+        //Haciendo cambios dentro del metodo GET que espera un parametro Id
+        /// <summary>  
+        /// Metodo para Obtener una Servicio por ID al hacer GET
+        /// </summary>  
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna el objeto Servicio con sus campos llenos</returns>  
+        ///
         [HttpGet("{id}")]
         public async Task<Servicio> Get(int id)
         {
@@ -38,6 +49,13 @@ namespace SalonBelleza.WebAPI.Controllers
         }
 
         // POST api/<ServicioController>
+        //Haciendo cambios dentro del metodo POST para trabajar con metodo asyncronico
+        /// <summary>  
+        /// Metodo para crear una Servicio al hacer Post
+        /// </summary>  
+        /// <param name="servicio">Se espera un objeto del Tipo Servicio el cual contenga todos sus datos menos el ID</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Servicio servicio)
         {
@@ -55,6 +73,13 @@ namespace SalonBelleza.WebAPI.Controllers
         }
 
         // PUT api/<ServicioController>/5
+        /// <summary>  
+        /// Metodo para Modificar un Servicio haiciendo PUT
+        /// </summary>  
+        /// <param name="servicio">Se espera un objeto del Tipo Servicio con todos sus datos incluyendo ID</param> 
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Servicio servicio)
         {
@@ -71,6 +96,12 @@ namespace SalonBelleza.WebAPI.Controllers
         }
 
         // DELETE api/<ServicioController>/5
+        /// <summary>  
+        /// Metodo para Eliminar un Servicio haiciendo DELETE 
+        /// </summary>   
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
@@ -88,6 +119,12 @@ namespace SalonBelleza.WebAPI.Controllers
 
         }
 
+        /// <summary>  
+        /// Metodo para Buscar un Servicio segun los parametros enviados
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio</param> 
+        /// <returns>Retorna un objeto Servicio si encuentra coincidencias</returns>  
+        ///
         [HttpPost("Buscar")]
         public async Task<List<Servicio>> Buscar([FromBody] object pServicio)
         {
