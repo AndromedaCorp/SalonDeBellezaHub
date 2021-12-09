@@ -10,6 +10,12 @@ namespace SalonBelleza.LogicaDeNegocio
 {
     //Soy un cliente.
     //Soy el segundo cliente
+
+    /// <summary>  
+    /// Esta clase es de la entidad Cliente de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de Cliente
+    /// 
+    /// </summary> 
     public class ClienteBL
     {
         public async Task<int> CrearAsync(Cliente pCliente) 

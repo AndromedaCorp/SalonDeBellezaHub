@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace SalonBelleza.LogicaDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Cita de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de cita
+    /// 
+    /// </summary> 
     public class CitaBL
     {
         #region CRUD

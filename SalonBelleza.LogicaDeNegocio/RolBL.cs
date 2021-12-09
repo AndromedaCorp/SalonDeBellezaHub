@@ -8,6 +8,11 @@ using SalonBelleza.AccesoADatos;
 
 namespace SalonBelleza.LogicaDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Rol de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de Rol
+    /// 
+    /// </summary> 
     public class RolBL
     {
         public async Task<int> CrearAsync(Rol pRol) 

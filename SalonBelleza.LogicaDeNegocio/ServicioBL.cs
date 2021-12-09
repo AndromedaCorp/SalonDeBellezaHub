@@ -10,6 +10,11 @@ using SalonBelleza.AccesoADatos;
 
 namespace SalonBelleza.LogicaDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Servicio de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de Servicio
+    /// 
+    /// </summary> 
     public class ServicioBL
     {
         public async Task<int> CrearAsync(Servicio pServicio)

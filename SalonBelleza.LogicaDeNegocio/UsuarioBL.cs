@@ -10,6 +10,11 @@ using SalonBelleza.AccesoADatos;
 
 namespace SalonBelleza.LogicaDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad Usuario de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de Usuario
+    /// 
+    /// </summary> 
     public class UsuarioBL
     {
         #region CRUD

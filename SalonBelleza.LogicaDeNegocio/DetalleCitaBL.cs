@@ -10,6 +10,11 @@ using SalonBelleza.AccesoADatos;
 
 namespace SalonBelleza.LogicaDeNegocio
 {
+    /// <summary>  
+    /// Esta clase es de la entidad DetalleCita de la capa Logica de De Negocio
+    /// Esta clase contiene Los metodos CRUD de Detallecita
+    /// 
+    /// </summary> 
     public class DetalleCitaBL
     {
 
