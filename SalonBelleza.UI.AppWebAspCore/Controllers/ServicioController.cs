@@ -27,6 +27,14 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             httpClient = client;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un Servicio haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio el cual tenga el Id</param>  
+        /// <returns>Objeto tipo cliente con sus atributos llenos</returns>  
+        /// 
+
         private async Task<Servicio> ObtenerServicioPorIdAsync(Servicio pServicio)
         {
             Servicio servicio = new Servicio();
@@ -38,11 +46,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                     new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
             }
             return servicio;
-
-
-
         }
 
+
+        /// <summary>  
+        /// Metodo para Refrescar el Token
+        /// </summary>    
+        ///
         private void RefrescarToken()
         {
             var claimExpired = User.FindFirst(ClaimTypes.Expired);
@@ -53,6 +63,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
         //***************************************
+
+        /// <summary>  
+        /// Metodo Index para obtener toda una Lista de Servicio al hacer Peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio con sus parametros llenos</param>  
+        /// <returns>Retorna la vista Index con objeto Servicio</returns>  
+        /// 
         // GET: ServicioController
         public async Task<IActionResult> Index(Servicio pServicio = null)
         {
@@ -79,6 +96,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicios);
         }
 
+        /// <summary>  
+        /// Metodo para obtener detalles de Servicio haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="id">Se espera una variable int la cual contenga el Id del registro a observar</param>  
+        /// <returns>Retorna la vista con un objeto servicio</returns>  
+        /// 
         // GET: ServicioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -89,6 +112,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicio);
         }
 
+
+        /// <summary>  
+        /// Metodo para Get de la Vista Create
+        /// </summary>   
+        /// <returns>Retorna la vista de Create</returns>  
+        /// 
         // GET: ServicioController/Create
         public IActionResult Create()
         {
@@ -96,6 +125,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View();
         }
 
+
+        /// <summary>  
+        /// Metodo para crear un Servicio haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio con sus atributos llenos</param>  
+        /// <returns>Retorna la vista con un objeto tipo servicio</returns>  
+        /// 
         // POST: ServicioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -126,6 +162,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Servicio haciendo peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio el cual tenga el Id</param>  
+        /// <returns>Retorna la vista con un objeto tipo servicio/returns>  
+        /// 
         // GET: RolController/Edit/5
         public async Task<IActionResult> Edit(Servicio pServicio)
         {
@@ -137,6 +179,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicio);
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Servicio haciendo peticion a la api
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objeto tipo servicio</returns>  
+        /// 
         // POST: RolController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -167,6 +215,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo Get de Delete haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objteo tipo Servicio con sus valores llenos</returns>  
+        ///
         // GET: RolController/Delete/5
         public async Task<IActionResult> Delete(Servicio pServicio)
         {
@@ -178,6 +232,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(servicio);
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar un Servicio haiciendo peticion a la API
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio</param> 
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la vista y el objeto servicio</returns>  
+        /// 
         // POST: RolController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
