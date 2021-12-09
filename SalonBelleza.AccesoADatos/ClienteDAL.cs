@@ -145,7 +145,7 @@ namespace SalonBelleza.AccesoADatos
                 clientes = await select.ToListAsync();
             }
             return clientes;
-        }
+        } //:3
         #endregion
 
     }
