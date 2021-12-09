@@ -29,6 +29,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             httpClient = client;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id una Cita hacinedo peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita el cual tenga el Id</param>  
+        /// <returns>Objeto tipo cita con sus atributos llenos</returns>  
+        /// 
         private async Task<Cita> ObtenerCitaPorIdAsync(Cita pCita)
         {
             Cita cita = new Cita();
@@ -42,7 +49,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return cita;
         }
 
-
+        /// <summary>  
+        /// Metodo para obtener clientes por Id hacinedo peticion a la API
+        /// </summary>  
+        /// <param name="id">Se espera una variable int la cual contenga el Id del registro a observar</param>  
+        /// <returns>Retorna la vista con un objeto cliente</returns>  
+        /// 
         private async Task<Cliente> ObtenerClientePorIdAsync(Cliente pCliente)
         {
             Cliente cliente = new Cliente();
@@ -170,7 +182,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
 
 
 
-        // GET: UsuarioController
+        /// <summary>  
+        /// Metodo Index para obtener toda una Lista de Cita al hacer Peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita con sus parametros llenos</param>  
+        /// <returns>Retorna la vista Index con objeto Cita</returns>  
+        /// 
         public async Task<IActionResult> Index(Cita pCita = null)
         {
             if (pCita == null)
@@ -198,6 +215,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(citas);
         }
 
+        /// <summary>  
+        /// Metodo para obtener detalles de Cita haicnedo peticiones a la API
+        /// </summary>  
+        /// <param name="id">Se espera una variable int la cual contenga el Id del registro a observar</param>  
+        /// <returns>Retorna la vista con un objeto Cita</returns>  
+        /// 
         // GET: UsuarioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -210,6 +233,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(cita);
         }
 
+        /// <summary>  
+        /// Metodo para Get de la Vista Create Para obtener Clientes,Usuarios,Servicios
+        /// </summary>   
+        /// <returns>Retorna la vista de Create</returns>  
+        /// 
         //UsuarioController/Create
         public async Task<IActionResult> Create()
         {
@@ -227,6 +255,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View();
         }
 
+
+        /// <summary>  
+        /// Metodo para crear un Cita haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita con sus atributos llenos</param>  
+        /// <returns>Retorna la vista con un objeto tipo Cita</returns>  
+        /// 
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -258,6 +293,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo para Modificar una Cita haciendo peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita el cual tenga el Id</param>  
+        /// <returns>Retorna la vista con un objeto tipo Cita</returns>  
+        /// 
         // GET: UsuarioController/Edit/5
         public async Task<IActionResult> Edit(Cita pCita)
         {
@@ -273,6 +314,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(cita);
         }
 
+        /// <summary>  
+        /// Metodo para Modificar una Cita haciendo peticion a la api
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objeto tipo Cita</returns>  
+        /// 
         // POST: UsuarioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -305,6 +352,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo Get de Delete haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objteo tipo Cita con sus valores llenos</returns>  
+        /// 
         // GET: UsuarioController/Delete/5
         public async Task<IActionResult> Delete(Cita pCita)
         {
@@ -316,6 +369,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(cita);
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar una Cita haiciendo peticion a la API
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita</param> 
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la vista y el objeto cita</returns>  
+        /// 
         // POST: UsuarioController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]

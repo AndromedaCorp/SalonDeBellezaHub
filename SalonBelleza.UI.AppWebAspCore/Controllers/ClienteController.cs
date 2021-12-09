@@ -165,7 +165,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         /// Metodo para Modificar un Cliente haciendo peticion a la API
         /// </summary>  
         /// <param name="pCliente">Se espera un objeto del Tipo Cliente el cual tenga el Id</param>  
-        /// <returns>Retorna la vista con un objeto tipo cliente/returns>  
+        /// <returns>Retorna la vista con un objeto tipo cliente</returns>  
         /// 
         // GET: RolController/Edit/5
         public async Task<IActionResult> Edit(Cliente pCliente)
