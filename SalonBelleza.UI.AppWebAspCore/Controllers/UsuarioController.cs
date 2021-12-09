@@ -25,12 +25,20 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
     [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class UsuarioController : Controller
     {
+        
         // Codigo agregar para consumir la Web API
         private readonly HttpClient httpClient;
         public UsuarioController(HttpClient client)
         {
             httpClient = client;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un usuario haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <returns>Objeto tipo usuario con sus campos llenos</returns>  
+        /// 
         private async Task<Usuario> ObtenerUsuarioPorIdAsync(Usuario pUsuario)
         {
             Usuario usuario = new Usuario();
@@ -43,6 +51,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
             return usuario;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un Rol haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol el cual tenga el Id</param>  
+        /// <returns>Objeto tipo usuario con sus campos llenos</returns>  
+        /// 
         private async Task<Rol> ObtenerRolPorIdAsync(Rol pRol)
         {
             Rol rol = new Rol();
@@ -55,6 +70,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
             return rol;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener todos los Roles haicnedo peticion a la API
+        /// </summary>   
+        /// <returns>Objeto tipo usuario con sus campos llenos</returns>  
+        /// 
         private async Task<List<Rol>> ObtenerRolesAsync()
         {
             List<Rol> roles = new List<Rol>();
@@ -68,6 +89,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
             return roles;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un usuario haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <returns>Objeto tipo usuario con sus campos llenos</returns>  
+        /// 
         private void RefrescarToken()
         {
             var claimExpired = User.FindFirst(ClaimTypes.Expired);
@@ -78,6 +106,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
         //****************************************
+
         // GET: UsuarioController
         public async Task<IActionResult> Index(Usuario pUsuario = null)
         {
@@ -107,6 +136,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(usuarios);
         }
 
+
         // GET: UsuarioController/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -118,6 +148,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(usuario);
         }
 
+        
         // GET: UsuarioController/Create
         public async Task<IActionResult> Create()
         {
@@ -129,6 +160,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View();
         }
 
+        /// <summary>  
+        /// Metodo para Crear un Usuario haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y el objeto Usuario</returns>  
+        /// 
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -163,6 +200,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+
         // GET: UsuarioController/Edit/5
         public async Task<IActionResult> Edit(Usuario pUsuario)
         {
@@ -177,6 +215,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(usuario);
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Usuario haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <param name="id">Se espera un Entero el cual contenga el Id del Usuario a modificar</param>
+        /// <returns>Retorna la vista y el objeto Usuario</returns>  
+        /// 
         // POST: UsuarioController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -210,6 +255,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar un Usuario haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <returns>Retornar la vista y el objeto Usuario</returns>  
+        /// 
         // GET: UsuarioController/Delete/5
         public async Task<IActionResult> Delete(Usuario pUsuario)
         {
@@ -222,6 +273,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(usuario);
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar un Usuario haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+         /// <param name="id">Se espera un entero con el Id del usaurio</param> 
+        /// <returns>Retornar la vista y el objeto Usuario</returns>  
+        /// 
         // POST: UsuarioController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -255,6 +313,14 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(usuario);
             }
         }
+
+        /// <summary>  
+        /// Metodo para Eliminar un Usuario haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
+        /// <param name="id">Se espera un entero con el Id del usaurio</param> 
+        /// <returns>Retornar la vista y el objeto Usuario</returns>  
+        ///
         // GET: UsuarioController/Create
         [AllowAnonymous]
         public async Task<IActionResult> Login(string ReturnUrl = null)
