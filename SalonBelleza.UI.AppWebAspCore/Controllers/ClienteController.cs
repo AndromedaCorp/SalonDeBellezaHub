@@ -31,7 +31,7 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
 
 
         /// <summary>  
-        /// Metodo para Obtener por Id un usuario haicnedo peticion a la API
+        /// Metodo para Obtener por Id un Servicio haicnedo peticion a la API
         /// </summary>  
         /// <param name="pCliente">Se espera un objeto del Tipo Cliente el cual tenga el Id</param>  
         /// <returns>Objeto tipo usuario con sus atributos llenos</returns>  
