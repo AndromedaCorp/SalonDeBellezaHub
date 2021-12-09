@@ -13,11 +13,10 @@ namespace SalonBelleza.AccesoADatos
 
         #region CRUD
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para crear un Nuevo cliente.
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
         /// 
         public static async Task<int> CrearAsync(Cliente pCliente) 
         {
@@ -31,11 +30,10 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para Modificar un Cliente segun los parametros agregados.
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del tipo Cliente con todas sus propiedades llenas</param>
+        /// <returns>Devuelve un entero para conocer la respuesta del metodo </returns>  
         /// 
         public static async Task<int> ModificarAsync(Cliente pCliente)
         {
@@ -54,11 +52,10 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para Eliminar un Cliente segun el Id.
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del metodo</returns>  
         /// 
         public static async Task<int> EliminarAsync(Cliente pCliente)
         {
@@ -73,11 +70,10 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para obtener por ID un cliente ingresado
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del metodo</returns>  
         /// 
         public static async Task<Cliente> ObtenerPorIdAsync(Cliente pCliente)
         {
@@ -90,11 +86,9 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para Obtener todos los Cliente.
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <returns>Devuelve una Lista de Clientes</returns>  
         /// 
         public static async Task<List<Cliente>> ObtenerTodosAsync()
         {
@@ -107,11 +101,11 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para Buscar por parametros
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// /// <param name="pQuery">Se espera una IQueryable de Cliente</param>
+        /// <returns>Devuelve un pQuery con las coincidencias encontradas en la base de Datos</returns>  
         /// 
         internal static IQueryable<Cliente> QuerySelect(IQueryable<Cliente> pQuery, Cliente pCliente)
         {
@@ -136,11 +130,10 @@ namespace SalonBelleza.AccesoADatos
         }
 
         /// <summary>  
-        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// Metodo para Buscar un Cliente Async
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
-        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
-        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// <param name="pCliente">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Retorna una Lista de Clientes con las coincidencias encontradas</returns>  
         /// 
         public static async Task<List<Cliente>> BuscarAsync(Cliente pCliente)
         {
