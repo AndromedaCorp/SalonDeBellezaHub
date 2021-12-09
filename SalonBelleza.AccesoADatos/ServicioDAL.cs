@@ -15,7 +15,12 @@ namespace SalonBelleza.AccesoADatos
 
 
         #region CRUD
-        //metodo de creacion
+        /// <summary>  
+        /// Metodo para crear un Nuevo Servicio.
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
+        /// 
         public static async Task<int> CrearAsync(Servicio pServicio)
         {
             int result = 0;
@@ -28,7 +33,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
-        //metodo de modificar
+        /// <summary>  
+        /// Metodo para Modificar un Servicio si encuentra coincidencia en la base de datos.
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
+        /// 
         public static async Task<int> ModificarAsync(Servicio pServicio)
         {
             int result = 0;
@@ -46,7 +56,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
-        //metodo de eliminacion
+        /// <summary>  
+        /// Metodo para Eliminar un servicio si encuentra un Id como coincidencia.
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Servicio, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
+        /// 
         public static async Task<int> EliminarAsync(Servicio pServicio)
         {
             int result = 0;
@@ -59,7 +74,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
-        //busqueda por ID
+        /// <summary>  
+        /// Metodo para Obtener un Servicio Por ID
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
+        /// 
         public static async Task<Servicio> ObtenerPorIdAsync(Servicio pServicio)
         {
             var servicio = new Servicio();
@@ -70,7 +90,11 @@ namespace SalonBelleza.AccesoADatos
             return servicio;
         }
 
-        //obtencion de todos
+        /// <summary>  
+        /// Metodo para Obtener Todos los Servicios
+        /// </summary>   
+        /// <returns>Devuelve un entero para conocer la respuesta del Metodo</returns>  
+        /// 
         public static async Task<List<Servicio>> ObtenerTodosAsync()
         {
             var servicio = new List<Servicio>();
@@ -81,7 +105,14 @@ namespace SalonBelleza.AccesoADatos
             return servicio;
         }
 
-        //filtros personalizados usando un Iqueryable con expresiones lambday linQ(en proceso)
+        /// <summary>  
+        /// filtros personalizados usando un Iqueryable con expresiones lambday linQ(en proceso)
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Cliente, con sus valores llenos</param>  
+        /// /// <param name="pQuery">Se espera una IQueryable de Cliente</param>
+        /// <returns>Devuelve un pQuery con las coincidencias encontradas en la base de Datos</returns>  
+        /// 
+        
         internal static IQueryable<Servicio> QuerySelect(IQueryable<Servicio> pQuery, Servicio pServicio) //los internal solo funcionan en su respectivo namespace 
         {
             if (pServicio.Id > 0)
@@ -97,6 +128,12 @@ namespace SalonBelleza.AccesoADatos
          return pQuery;
         }
 
+        /// <summary>  
+        /// Metodo para Buscar un Cliente Async
+        /// </summary>  
+        /// <param name="pServicio">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Retorna una Lista de Clientes con las coincidencias encontradas</returns>  
+        /// 
         public static async Task<List<Servicio>> BuscarAsync(Servicio pServicio)
         {
             var servicio = new List<Servicio>();
