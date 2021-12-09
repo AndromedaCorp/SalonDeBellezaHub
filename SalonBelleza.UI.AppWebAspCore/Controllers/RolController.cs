@@ -27,6 +27,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         {
             httpClient = client;
         }
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un Rol haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol el cual tenga el Id</param>  
+        /// <returns>Objeto tipo Rol con sus atributos llenos</returns>  
+        /// 
         private async Task<Rol> ObtenerRolPorIdAsync(Rol pRol)
         {
             Rol rol = new Rol();
@@ -48,7 +55,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
         }
-        //***************************************
+
+        /// <summary>  
+        /// Metodo Index para obtener toda una Lista de Roles al hacer Peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol con sus parametros llenos</param>  
+        /// <returns>Retorna la vista Index con objeto Rol</returns>  
+        /// 
         // GET: RolController
         public async Task<IActionResult> Index(Rol pRol = null)
         {
@@ -75,6 +88,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(roles);
         }
 
+        /// <summary>  
+        /// Metodo para obtener detalles de Rol haicnedo peticion a la API
+        /// </summary>  
+        /// <param name="id">Se espera una variable int la cual contenga el Id del registro a observar</param>  
+        /// <returns>Retorna la vista con un objeto  Rol</returns>  
+        /// 
         // GET: RolController/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -85,6 +104,11 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(rol);
         }
 
+        /// <summary>  
+        /// Metodo para Get de la Vista Create
+        /// </summary>   
+        /// <returns>Retorna la vista de Create</returns>  
+        /// 
         // GET: RolController/Create
         public IActionResult Create()
         {
@@ -92,6 +116,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View();
         }
 
+        /// <summary>  
+        /// Metodo para crear un Rol haciendo Peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol con sus atributos llenos</param>  
+        /// <returns>Retorna la vista con un objeto tipo Rol</returns>  
+        /// 
         // POST: RolController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,6 +152,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Rol haciendo peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol el cual tenga el Id</param>  
+        /// <returns>Retorna la vista con un objeto tipo Rol</returns>  
+        /// 
         // GET: RolController/Edit/5
         public async Task<IActionResult> Edit(Rol pRol)
         {
@@ -133,6 +169,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(rol);
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Rol haciendo peticion a la api
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objeto tipo Rol</returns>  
+        /// 
         // POST: RolController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -163,6 +205,12 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             }
         }
 
+        /// <summary>  
+        /// Metodo Get de Delete haciendo peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol el cual tenga el Id</param>  
+        /// <returns>Retorna la vista y un objteo tipo Rol con sus valores llenos</returns>  
+        /// 
         // GET: RolController/Delete/5
         public async Task<IActionResult> Delete(Rol pRol)
         {
@@ -174,6 +222,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(rol);
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar un Rol haiciendo peticion a la API
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol</param> 
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la vista y el objeto rol</returns>  
+        /// 
         // POST: RolController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -20,7 +20,13 @@ namespace SalonBelleza.WebAPI.Controllers
     public class RolController : ControllerBase
     {
         private RolBL rolBL = new RolBL();
-        
+
+
+        /// <summary>  
+        /// Metodo Get para obtener todos los Roles
+        /// </summary>   
+        /// <returns>Retorna una Lista de Roles</returns>  
+        ///
         // GET: api/<RolController>
         [HttpGet]
         public async Task <IEnumerable<Rol>> Get()
@@ -28,6 +34,12 @@ namespace SalonBelleza.WebAPI.Controllers
             return await rolBL.ObtenerTodosAsync();
         }
 
+        /// <summary>  
+        /// Metodo para Obtener un Rol por ID al hacer GET
+        /// </summary>  
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna el objeto rol con sus campos llenos</returns>  
+        ///
         // GET api/<RolController>/5
         [HttpGet("{id}")]
         public async Task<Rol> Get(int id)
@@ -37,6 +49,12 @@ namespace SalonBelleza.WebAPI.Controllers
             return await rolBL.ObtenerPorIdAsync(rol);      
         }
 
+        /// <summary>  
+        /// Metodo para crear un Rol al hacer Post
+        /// </summary>  
+        /// <param name="rol">Se espera un objeto del Tipo rol el cual contenga todos sus datos menos el ID</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         // POST api/<RolController>
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Rol rol)
@@ -55,6 +73,13 @@ namespace SalonBelleza.WebAPI.Controllers
 
         }
 
+        /// <summary>  
+        /// Metodo para Modificar un Rol haiciendo PUT
+        /// </summary>  
+        /// <param name="rol">Se espera un objeto del Tipo rol con todos sus datos incluyendo ID</param> 
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         // PUT api/<RolController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] Rol rol )
@@ -71,6 +96,12 @@ namespace SalonBelleza.WebAPI.Controllers
 
         }
 
+        /// <summary>  
+        /// Metodo para Eliminar un Rol haiciendo DELETE 
+        /// </summary>   
+        /// <param name="id">Se espera un entero el cual contenga el Id</param> 
+        /// <returns>Retorna la respuesta de la Peticion</returns>  
+        ///
         // DELETE api/<RolController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
@@ -89,6 +120,13 @@ namespace SalonBelleza.WebAPI.Controllers
                 return BadRequest();
             }
         }
+
+        /// <summary>  
+        /// Metodo para Buscar un Rol segun los parametros enviados
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Servicio</param> 
+        /// <returns>Retorna un objeto rol si encuentra coincidencias</returns>  
+        ///
         [HttpPost("Buscar")]
         public async Task<List<Rol>> Buscar([FromBody] Object pRol)
         {
