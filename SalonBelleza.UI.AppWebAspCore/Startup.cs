@@ -44,7 +44,7 @@ namespace SalonBelleza.UI.AppWebAspCore
             // Agregar el cliente HttpClient para consumir la Web API
             services.AddTransient(sp => new HttpClient
             {
-                BaseAddress = new Uri("https://salonbellezawebapi.somee.com/api/")
+                BaseAddress = new Uri("https://salonbellezawebapi.azurewebsites.net/api/")
             });
             //**
 
