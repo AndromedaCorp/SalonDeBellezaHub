@@ -149,6 +149,13 @@ namespace SalonBelleza.AccesoADatos
                 }
                 return detallecita;
             }
+
+        /// <summary>  
+        /// Metodo para Buscar con Citas Incluidos con DetalleCita
+        /// </summary>  
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Objeto tipo List DetalleCita que contenga la lista de Servicio</returns>  
+        ///
         public static async Task<List<DetalleCita>> BuscarIncluirServicioAsync(DetalleCita pDetalleCita)
         {
             var detallecita = new List<DetalleCita>();
@@ -162,6 +169,11 @@ namespace SalonBelleza.AccesoADatos
         }
         #endregion
 
+        /// <summary>  
+        /// Metodo para crear detalles
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        ///
         public static void CrearDetalles(DBContexto pContext,List<DetalleCita> pDetalles, Cita pCita) 
         {
             if (pDetalles != null && pDetalles.Count > 0)
@@ -174,6 +186,11 @@ namespace SalonBelleza.AccesoADatos
             }
         }
 
+        /// <summary>  
+        /// Metodo para actualizar detalles
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        ///
         public static async Task ActualizarDetalles(DBContexto pContext, List<DetalleCita> pDetalles, Cita pCita) 
         {
             if (pDetalles != null && pDetalles.Count() > 0)
