@@ -12,13 +12,12 @@ namespace SalonBelleza.AccesoADatos
     {
 
         /// <summary>  
-        /// Este metodo es usado para crear nuevos Roles 
+        /// Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
+        /// y usar al menos un metodo asincronico en el.
         /// </summary>  
-        /// <param name="Rol">Hace referencia a la entidad Rol</param>  
-        /// <param name="pRol">Crea un espacio en memoria para almacenar valores de Rol</param>  
-        /// <returns>Retorna un Rol</returns>  
-        ///   
-
+        /// <param name="pRol">Se espera un objeto del Tipo Rol, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> CrearAsync(Rol pRol) 
         {
             int result = 0;
@@ -30,6 +29,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Con este metodo Actualisaremos en la base de datos el Rol.
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> ModificarAsync(Rol pRol) 
         {
             int result = 0;
@@ -43,6 +48,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para eliminar para Eliminar un Rol en la Base de Datos.
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> EliminarAsync(Rol pRol)
         {
             int result = 0;
@@ -54,7 +65,13 @@ namespace SalonBelleza.AccesoADatos
             }
             return result;
         }
-        
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un Rol en la base de Datos
+        /// </summary>  
+        /// <param name="pRol">Se espera un objeto del Tipo Rol, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<Rol> ObtenerPorIdAsync(Rol pRol) 
         {
             var rol = new Rol();
@@ -65,6 +82,11 @@ namespace SalonBelleza.AccesoADatos
             return rol;
         }
 
+        /// <summary>  
+        /// Metodo para obtener todos los Roles en la base de Datos.'
+        /// </summary>  
+        /// <returns>Retorna una Lista de Roles</returns>  
+        ///
         public static async Task<List<Rol>> ObtenerTodosAsync() 
         {
             var roles = new List<Rol>();
@@ -74,7 +96,14 @@ namespace SalonBelleza.AccesoADatos
             }
             return roles;
         }
-        
+
+        /// <summary>  
+        /// Metodo QuerySelect sirve para hacer filtros personalisados utilizando Entity, LinQ expresiones lanba.
+        ///Iternal es para indicar que este Metodo se usara solo dentro del mismo NameSpace.
+        /// </summary>  
+        /// <param name="pRol1">Se espera un objeto del Tipo Rol, con sus valores llenos</param>  
+        /// <returns>Retorna las coincidencias encontradas en la base de Datos</returns>  
+        ///
         internal static IQueryable<Rol> QuerySelect(IQueryable<Rol> pQuery, Rol pRol1)
         {
             if (pRol1.Id > 0)
@@ -87,6 +116,12 @@ namespace SalonBelleza.AccesoADatos
             return pQuery;
         }
 
+        /// <summary>  
+        /// Metodo para Obtener por Id un Rol en la base de Datos
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<List<Rol>> BuscarAsync (Rol pRol) 
         {
             var roles = new List<Rol>();

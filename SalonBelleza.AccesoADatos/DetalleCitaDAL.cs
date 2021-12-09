@@ -14,9 +14,15 @@ namespace SalonBelleza.AccesoADatos
     {
         //Uy
         //comentario
-             #region CRUD
-            //metodo de creacion
-            public static async Task<int> CrearAsync(DetalleCita pDetalleCita)
+        #region CRUD
+        /// <summary>  
+        /// Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
+        /// y usar al menos un metodo asincronico en el.
+        /// </summary> 
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+        public static async Task<int> CrearAsync(DetalleCita pDetalleCita)
             {
                 int result = 0;
                 using (var dbContexto = new DBContexto())
@@ -28,8 +34,14 @@ namespace SalonBelleza.AccesoADatos
                 return result;
             }
 
-            //metodo de modificar
-            public static async Task<int> ModificarAsync(DetalleCita pDetalleCita)
+
+        /// <summary>  
+        /// Con este metodo Actualisaremos en la base de datos el DetalleCita.
+        /// </summary>  
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+        public static async Task<int> ModificarAsync(DetalleCita pDetalleCita)
             {
                 int result = 0;
                 using (var dbContexto = new DBContexto())
@@ -46,8 +58,13 @@ namespace SalonBelleza.AccesoADatos
                 return result;
             }
 
-            //metodo de eliminacion
-            public static async Task<int> EliminarAsync(DetalleCita pDetalleCita)
+        /// <summary>  
+        /// Metodo para eliminar para Eliminar un DetalleCita en la Base de Datos.
+        /// </summary>  
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+        public static async Task<int> EliminarAsync(DetalleCita pDetalleCita)
             {
                 int result = 0;
                 using (var dbContexto = new DBContexto())
@@ -59,8 +76,13 @@ namespace SalonBelleza.AccesoADatos
                 return result;
             }
 
-            //busqueda por ID
-            public static async Task<DetalleCita> ObtenerPorIdAsync(DetalleCita pDetalleCita)
+        /// <summary>  
+        /// Metodo para Obtener por Id un DetalleCita en la base de Datos
+        /// </summary>  
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+        public static async Task<DetalleCita> ObtenerPorIdAsync(DetalleCita pDetalleCita)
             {
                 var detallecita = new DetalleCita();
                 using (var dbContexto = new DBContexto())
@@ -70,8 +92,12 @@ namespace SalonBelleza.AccesoADatos
                 return detallecita;
             }
 
-            //obtencion de todos
-            public static async Task<List<DetalleCita>> ObtenerTodosAsync()
+        /// <summary>  
+        /// Metodo para obtener todos los DetalleCita en la base de Datos.'
+        /// </summary>  
+        /// <returns>Retorna una Lista de DetalleCita</returns>  
+        ///
+        public static async Task<List<DetalleCita>> ObtenerTodosAsync()
             {
                 var detallecita = new List<DetalleCita>();
                 using (var dbContexto = new DBContexto())
@@ -81,8 +107,14 @@ namespace SalonBelleza.AccesoADatos
                 return detallecita;
             }
 
-            //filtros personalizados usando un Iqueryable con expresiones lambday linQ(en proceso)
-            internal static IQueryable<DetalleCita> QuerySelect(IQueryable<DetalleCita> pQuery, DetalleCita pDetalleCita) //los internal solo funcionan en su respectivo namespace 
+        /// <summary>  
+        /// Metodo QuerySelect sirve para hacer filtros personalisados utilizando Entity, LinQ expresiones lanba.
+        ///Iternal es para indicar que este Metodo se usara solo dentro del mismo NameSpace.
+        /// </summary>  
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Retorna las coincidencias encontradas en la base de Datos</returns>  
+        ///
+        internal static IQueryable<DetalleCita> QuerySelect(IQueryable<DetalleCita> pQuery, DetalleCita pDetalleCita) //los internal solo funcionan en su respectivo namespace 
             {
                 if (pDetalleCita.Id > 0)
                     pQuery = pQuery.Where(s => s.Id == pDetalleCita.Id);
@@ -100,7 +132,13 @@ namespace SalonBelleza.AccesoADatos
                 return pQuery;
             }
 
-            public static async Task<List<DetalleCita>> BuscarAsync(DetalleCita pDetalleCita)
+        /// <summary>  
+        /// Metodo para Obtener por Id un DetalleCita en la base de Datos
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+        public static async Task<List<DetalleCita>> BuscarAsync(DetalleCita pDetalleCita)
             {
                 var detallecita = new List<DetalleCita>();
                 using (var dbContexto = new DBContexto()) //la palabra using encierra

@@ -17,7 +17,13 @@ namespace SalonBelleza.LogicaDeNegocio
     /// </summary> 
     public class DetalleCitaBL
     {
-
+        /// <summary>  
+        /// Aqui se retorna el Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
+        /// y usar al menos un metodo asincronico en el.
+        /// </summary> 
+        /// <param name="pDetalleCita">Se espera un objeto del Tipo DetalleCita, con sus valores llenos</param>  
+        /// <returns>Retorna una tarea Asyncrona</returns>  
+        ///
         public async Task<int> CrearAsync(DetalleCita pDetalleCita)
         {
             return await DetalleCitaDAL.CrearAsync(pDetalleCita);

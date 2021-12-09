@@ -12,6 +12,13 @@ namespace SalonBelleza.AccesoADatos
     public class CitaDAL
     {
         #region CRUD
+        /// <summary>  
+        /// Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
+        /// y usar al menos un metodo asincronico en el.
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> CrearAsync(Cita pCita) 
         {
             int result = 0;
@@ -38,6 +45,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Con este metodo Actualisaremos en la base de datos el Cita.
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> ModificarAsync(Cita pCita) 
         {
             int result = 0;
@@ -70,6 +83,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para eliminar para Eliminar un Cita en la Base de Datos.
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> EliminarAsync(Cita pCita)
         {
             int result = 0;
@@ -101,6 +120,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para Obtener por Id un Cita en la base de Datos
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<Cita> ObtenerPorIdAsync(Cita pCita)
         {
             var cita = new Cita();
@@ -111,6 +136,11 @@ namespace SalonBelleza.AccesoADatos
             return cita;
         }
 
+        /// <summary>  
+        /// Metodo para obtener todos los Cita en la base de Datos.'
+        /// </summary>  
+        /// <returns>Retorna una Lista de Cita</returns>  
+        ///
         public static async Task<List<Cita>> ObtenerTodosAsync()
         {
             var cita = new List<Cita>();
@@ -121,6 +151,13 @@ namespace SalonBelleza.AccesoADatos
             return cita;
         }
 
+        /// <summary>  
+        /// Metodo QuerySelect sirve para hacer filtros personalisados utilizando Entity, LinQ expresiones lanba.
+        ///Iternal es para indicar que este Metodo se usara solo dentro del mismo NameSpace.
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Retorna las coincidencias encontradas en la base de Datos</returns>  
+        ///
         internal static IQueryable<Cita> QuerySelect(IQueryable<Cita> pQuery, Cita pCita) //los internal solo funcionan en su respectivo namespace 
         {
             if (pCita.Id > 0)
@@ -152,6 +189,13 @@ namespace SalonBelleza.AccesoADatos
             return pQuery;
         }
 
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un Cita en la base de Datos
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<List<Cita>> BuscarAsync(Cita pCita)
         {
             var cita = new List<Cita>();
@@ -165,6 +209,12 @@ namespace SalonBelleza.AccesoADatos
         }
         #endregion
 
+        /// <summary>  
+        /// Metodo para Buscar con Citas Incluidos con Usuarios
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Objeto tipo List Cita que contenga la lista de Usuario</returns>  
+        ///
         public static async Task<List<Cita>> BuscarIncluirUsuarioAsync(Cita pCita)
         {
             var cita = new List<Cita>();
@@ -177,6 +227,12 @@ namespace SalonBelleza.AccesoADatos
             return cita;
         }
 
+        /// <summary>  
+        /// Metodo para Buscar con Citas Incluidos con Clientes
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Objeto tipo List Cita que contenga la lista de Clientes</returns>  
+        ///
         public static async Task<List<Cita>> BuscarIncluirClienteAsync(Cita pCita)
         {
             var cita = new List<Cita>();
@@ -189,6 +245,12 @@ namespace SalonBelleza.AccesoADatos
             return cita;
         }
 
+        /// <summary>  
+        /// Metodo para Buscar con Citas Incluidos con Usuarios y Clientes
+        /// </summary>  
+        /// <param name="pCita">Se espera un objeto del Tipo Cita, con sus valores llenos</param>  
+        /// <returns>Objeto tipo List Cita que contenga la lista de Usaurios y Clientes</returns>  
+        ///
         public static async Task<List<Cita>> BuscarIncluirUsuarioClienteAsync(Cita pCita)
         {
             var cita = new List<Cita>();
