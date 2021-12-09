@@ -10,6 +10,15 @@ namespace SalonBelleza.AccesoADatos
 {
     public class ClienteDAL
     {
+
+        #region CRUD
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<int> CrearAsync(Cliente pCliente) 
         {
             int result = 0;
@@ -21,6 +30,13 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<int> ModificarAsync(Cliente pCliente)
         {
             int result = 0;
@@ -37,6 +53,13 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<int> EliminarAsync(Cliente pCliente)
         {
             int result = 0;
@@ -49,6 +72,13 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<Cliente> ObtenerPorIdAsync(Cliente pCliente)
         {
             var cliente = new Cliente();
@@ -59,6 +89,13 @@ namespace SalonBelleza.AccesoADatos
             return cliente;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<List<Cliente>> ObtenerTodosAsync()
         {
             var clientes = new List<Cliente>();
@@ -69,6 +106,13 @@ namespace SalonBelleza.AccesoADatos
             return clientes;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         internal static IQueryable<Cliente> QuerySelect(IQueryable<Cliente> pQuery, Cliente pCliente)
         {
             if (pCliente.Id > 0)
@@ -91,6 +135,13 @@ namespace SalonBelleza.AccesoADatos
             return pQuery;
         }
 
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
         public static async Task<List<Cliente>> BuscarAsync(Cliente pCliente)
         {
             var clientes = new List<Cliente>();
@@ -102,6 +153,7 @@ namespace SalonBelleza.AccesoADatos
             }
             return clientes;
         }
+        #endregion
 
     }
 }

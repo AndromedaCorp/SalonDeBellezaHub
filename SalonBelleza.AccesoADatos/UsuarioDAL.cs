@@ -12,8 +12,13 @@ namespace SalonBelleza.AccesoADatos
 {
     public class UsuarioDAL
     {
-        // :3
-        //Metodo para Encriptar las contraseñas.
+
+        /// <summary>  
+        /// Metodo para Encriptar la Contraseña.  
+        /// </summary>  
+        /// <param name="pUsuario">Se espera como parametro un Objeto de Tipo Usuario, el cual debe contener el Password del usuario</param>   
+        /// <returns>Obtenemos la Password completamente Encriptada</returns>  
+        ///  
         private static void EncriptarMD5(Usuario pUsuario)
         {
             using (var md5 = MD5.Create())
@@ -28,7 +33,13 @@ namespace SalonBelleza.AccesoADatos
 
         }
 
-        //Metodo para validar si el Login Existe.
+        /// <summary>  
+        /// Metodo para validar si existe un Login en la base de datos
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <param name="pDbContext">Se espera un objeto del DbContexto para mapear la Entidad</param>  
+        /// <returns>Si el usurio ya existe en la base de Datos, arroja True</returns>  
+        ///  
         private static async Task<bool> ExisteLogin(Usuario pUsuario, DBContexto pDbContext)
         {
             bool result = false;
@@ -40,8 +51,13 @@ namespace SalonBelleza.AccesoADatos
         }
 
         #region CRUD
-        //Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
-        //y usar al menos un metodo asincronico en el.
+        /// <summary>  
+        /// Metodo para guardar de forma Asincronica. para que un metodo sea Asincronico debe llevar la palabra Async
+        /// y usar al menos un metodo asincronico en el.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> CrearAsync(Usuario pUsuario)
         {
             int result = 0;
@@ -63,7 +79,13 @@ namespace SalonBelleza.AccesoADatos
 
         }
 
-        //Con este metodo Actualisaremos en la base de datos.
+        /// <summary>  
+        /// Con este metodo Actualisaremos en la base de datos el Usuario.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
+
         public static async Task<int> ModificarAsync(Usuario pUsuario)
         {
             int result = 0;
@@ -91,7 +113,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
-        //Metodo para eliminar.
+        /// <summary>  
+        /// Metodo para eliminar para Eliminar un Usuario en la Base de Datos.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<int> EliminarAsync(Usuario pUsuario)
         {
             int result = 0;
@@ -104,7 +131,12 @@ namespace SalonBelleza.AccesoADatos
             return result;
         }
 
-        //Metodo para Obtener por Id
+        /// <summary>  
+        /// Metodo para Obtener por Id un usuario en la base de Datos
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<Usuario> ObtenerPorIdAsync(Usuario pUsuario)
         {
             var usuario = new Usuario();
@@ -115,7 +147,12 @@ namespace SalonBelleza.AccesoADatos
             return usuario;
         }
 
-        //Metodo para obtener todos los Usuarios en la base de Datos.'
+        /// <summary>  
+        /// Metodo para obtener todos los Usuarios en la base de Datos.'
+        /// </summary>  
+        /// <returns>Retorna una Lista de usuarios</returns>  
+        ///
+
         public static async Task<List<Usuario>> ObtenerTodosAsync()
         {
             var usuario = new List<Usuario>(); //Variable que va a devolver nuestro metodo, en este caso una Lista.
@@ -127,8 +164,14 @@ namespace SalonBelleza.AccesoADatos
         }
 
 
-        //Metodo QuerySelect sirve para hacer filtros personalisados utilizando Entity, LinQ expresiones lanba.
-        //Iternal es para indicar que este Metodo se usara solo dentro del mismo NameSpace.
+        /// <summary>  
+        /// Metodo QuerySelect sirve para hacer filtros personalisados utilizando Entity, LinQ expresiones lanba.
+        ///Iternal es para indicar que este Metodo se usara solo dentro del mismo NameSpace.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Retorna las coincidencias encontradas en la base de Datos</returns>  
+        ///
+        
         internal static IQueryable<Usuario> QuerySelect(IQueryable<Usuario> pQuery, Usuario pUsuario)
         {
             if (pUsuario.Id > 0) //los que son tipo entero es > 0, para que funcione el filtro.
@@ -160,6 +203,13 @@ namespace SalonBelleza.AccesoADatos
             return pQuery;
         }
 
+
+        /// <summary>  
+        /// Metodo para Obtener por Id un usuario en la base de Datos
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Resultado en Entero del metodo</returns>  
+        ///
         public static async Task<List<Usuario>> BuscarAsync(Usuario pUsuario)
         {
             var usuario = new List<Usuario>();
@@ -175,8 +225,12 @@ namespace SalonBelleza.AccesoADatos
 
         #endregion
 
-
-        //Metodo para Buscar con Roles Incluidos.
+        /// <summary>  
+        /// Metodo para Buscar con Roles Incluidos
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Objeto tipo List usuario que contenga la lista de Roles</returns>  
+        ///
         public static async Task<List<Usuario>> BuscarIncluirRolesAsync(Usuario pUsuario)
         {
             var usuario = new List<Usuario>();
@@ -189,8 +243,12 @@ namespace SalonBelleza.AccesoADatos
             return usuario;
         }
 
-
-        //Metodo para Iniciar el login.
+        /// <summary>  
+        /// Metodo para Iniciar el login y validar si esas credenciales existen en el sistema.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// <returns>Objeto tipo usuario lleno si encuentra coincidencias, si no estara vacio</returns>  
+        /// 
         public static async Task<Usuario> LoginAsync(Usuario pUsuario)
         {
             var usuario = new Usuario();
@@ -204,7 +262,14 @@ namespace SalonBelleza.AccesoADatos
         }
 
 
-        //Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// <summary>  
+        /// Metodo para cambiar el Password, Comparando si esta correcto el password actual.
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario, con sus valores llenos</param>  
+        /// /// <param name="pPasswordAnt">Se espera una variable la cual contenga la PasswordAnterior</param>
+        /// <returns>Devuelve un entero para conocer la respuesta</returns>  
+        /// 
+
         public static async Task<int> CambiarPasswordAsync(Usuario pUsuario, string pPasswordAnt)
         {
             int result = 0;
