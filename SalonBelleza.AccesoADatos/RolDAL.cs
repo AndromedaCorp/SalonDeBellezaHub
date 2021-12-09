@@ -10,6 +10,15 @@ namespace SalonBelleza.AccesoADatos
 {
     public class RolDAL
     {
+
+        /// <summary>  
+        /// Este metodo es usado para crear nuevos Roles 
+        /// </summary>  
+        /// <param name="Rol">Hace referencia a la entidad Rol</param>  
+        /// <param name="pRol">Crea un espacio en memoria para almacenar valores de Rol</param>  
+        /// <returns>Retorna un Rol</returns>  
+        ///   
+
         public static async Task<int> CrearAsync(Rol pRol) 
         {
             int result = 0;
