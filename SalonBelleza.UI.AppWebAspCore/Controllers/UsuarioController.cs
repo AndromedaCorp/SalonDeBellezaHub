@@ -315,11 +315,10 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
         }
 
         /// <summary>  
-        /// Metodo para Eliminar un Usuario haciendo Peticion a la API
+        /// Metodo Get para obtener la vista Login
         /// </summary>  
-        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual tenga el Id</param>  
-        /// <param name="id">Se espera un entero con el Id del usaurio</param> 
-        /// <returns>Retornar la vista y el objeto Usuario</returns>  
+        /// <param name="ReturnUrl">Se espera una varible Tipo String el cual debe contener la Url</param>   
+        /// <returns>La vista de Tipo Login</returns>  
         ///
         // GET: UsuarioController/Create
         [AllowAnonymous]
@@ -331,6 +330,14 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View();
         }
 
+
+        /// <summary>  
+        /// Metodo Login el cual le hara una Peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual contenga todos sus campos llenos a excepsion del Id</param>  
+        /// <param name="pReturnUrl">Se espera un string el cual contenga la Url</param> 
+        /// <returns>Si el Login es correcto retorna la vista Index Home</returns>  
+        ///
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -381,6 +388,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
                 return View(new Usuario { Login = pUsuario.Login });
             }
         }
+
+        /// <summary>  
+        /// Metodo para Cerrar sesion quitando el Token de autorisacion
+        /// </summary> 
+        /// <param name="ReturnUrl">Se espera un string el cual contenga la Url</param> 
+        /// <returns>Retoran la vista Login</returns>  
+        ///
         [AllowAnonymous]
         public async Task<IActionResult> CerrarSesion(string ReturnUrl = null)
         {
@@ -408,6 +422,13 @@ namespace SalonBelleza.UI.AppWebAspCore.Controllers
             return View(usuarioActual);
         }
 
+        /// <summary>  
+        /// Metodo para cambiar la Password haciendo peticion a la API
+        /// </summary>  
+        /// <param name="pUsuario">Se espera un objeto del Tipo Usuario el cual contenga todos sus campos llenos</param>  
+        /// <param name="pPasswordAnt">Se espera un string el cual contenga la PasswordAnterior del usuario</param> 
+        /// <returns>Retorna el usuario Actual con sus valores</returns>  
+        ///
         // POST: UsuarioController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
