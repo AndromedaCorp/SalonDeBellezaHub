@@ -34,7 +34,7 @@ namespace SalonBelleza.UI.AppWebAspCore
             {
                 // Aca se redireccionara en caso que no posea permiso. Ira a la vista de Login.
                 o.LoginPath = new PathString("/Usuario/login");
-                                    //tiempo de duracion de las cookies, en este caso se han puesto 8 horas.
+                //tiempo de duracion de las cookies, en este caso se han puesto 8 horas.
                 o.ExpireTimeSpan = TimeSpan.FromHours(10);
                 o.AccessDeniedPath= new PathString("/Usuario/AccessDenied");
                 o.SlidingExpiration = true;

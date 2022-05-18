@@ -57,6 +57,7 @@ namespace SalonBelleza.EntidadesDeNegocio
     public enum Estado_Cita
     {
         PENDIENTE = 1,
-        REALIZADA = 2
+        REALIZADA = 2,
+        CANCELADA = 3
     }
 }
